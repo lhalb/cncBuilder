@@ -14,6 +14,8 @@ import sys # We need sys so that we can pass argv to QApplication
 from PyQt5 import uic
 import numpy as np
 import re
+import json
+from os.path import isdir, dirname
 
 
 design_file = 'src/gui_mumo_gen.ui'      # <-- Insert Python File of UI
@@ -68,6 +70,9 @@ class Database(Singleton):
     def hasData(self):
         return hasattr(self, "_data")
 
+    def clear(self):
+        self._data = {}
+
     def load(self):
         '''
         Kommentar:
@@ -84,7 +89,7 @@ class Database(Singleton):
             Wenn die Daten geparst werden, muss geprüft werden, ob die Zeilenlänge über den Bildschirmrand reicht.
             Anschließend muss ein "DEF" vor die Zeilen gesetzt werden. 
         '''
-
+        
         self._data = {
             'Comment': {
                 'Autor' : 'Halbauer',
@@ -140,12 +145,12 @@ class MyApp(QtWidgets.QMainWindow):
         self.ui.but_comment.clicked.connect(self.getcomment)
         self.ui.but_cnc_preview.clicked.connect(partial(self.write_mpf, True))
         self.ui.but_updateDB.clicked.connect(self.update_db)
-
+        self.ui.actionSave.triggered.connect(self.export_db)
+        self.ui.actionLoad.triggered.connect(self.read_from_json)
 
     def preview_cnc(self, text):
         self.prev = CNCPreview(text)
         self.prev.show()
-
 
     def debug(self):
         '''
@@ -156,11 +161,9 @@ class MyApp(QtWidgets.QMainWindow):
         # db.load()
         print(db.get())
 
-
     def getcomment(self):
         self.cd = Comments()
         self.cd.show()
-
 
     def get_geo(self):
         '''
@@ -193,7 +196,6 @@ class MyApp(QtWidgets.QMainWindow):
         y_pos = wg.y()
 
         self.pop.setGeometry(x_pos, y_pos, p_geo.width(), wg.height())
-
 
     def onClicked(self):
         rb = self.sender()
@@ -237,9 +239,32 @@ class MyApp(QtWidgets.QMainWindow):
 
         return data, rows
 
-
     def update_db(self):
         db = Database()
+
+        config = {'Config': {
+            'CI': self.ui.check_ci.isChecked(),
+            'FLASH': self.ui.check_flash.isChecked(),
+            'NAME': self.ui.txt_proz_name.text(),
+            'NOXY': self.ui.check_no_xy.isChecked(),
+            'XY': self.ui.check_xy.isChecked(),
+            'SUSV': self.ui.check_susv.isChecked(),
+            'CIRC': self.ui.check_circular.isChecked(),
+            'LIN': self.ui.check_linear.isChecked(),
+            'AUTOLIN': self.ui.cb_lin_auto.isChecked(),
+            'REG': self.ui.check_reg.isChecked(),
+            'ELO': self.ui.check_elo.isChecked(),
+            'POS': self.ui.check_pos.isChecked(),
+            'SIM': self.ui.check_sim.isChecked(),
+            'JOG': self.ui.check_jog.isChecked(),
+            'HDW': self.ui.check_hdws.isChecked(),
+            'MP': self.ui.check_mp.isChecked(),
+            'FUSU': self.ui.check_fusu.isChecked(),
+            'MUMO': self.ui.rad_but_mumo.isChecked(),
+            'MIMO': self.ui.rad_but_mimo.isChecked()
+        }}
+
+        db.change(config)
 
         par_ini = []
         if self.ui.rad_but_mumo.isChecked():
@@ -262,6 +287,38 @@ class MyApp(QtWidgets.QMainWindow):
 
         db.change({'Funktionsgenerator': {'Parameter': mumo_data, 'Order': gen_rows}})
 
+
+    def export_db(self):
+        db = Database()
+        data = db.get()
+
+        files_types = "JSON (*.json)"
+        path = QtWidgets.QFileDialog.getSaveFileName(self, 'Datenbank speichern', "db.json", files_types)[0]
+
+        if not isdir(dirname(path)):
+            self.statusBar().showMessage('Ungültiges Verzeichnis', 2000)
+            return 
+
+        with open(path, 'w') as json_file:
+            json.dump(data, json_file)
+
+        self.statusBar().showMessage('Datenbank erfolgreich exportiert', 2000)
+
+    def read_from_json(self):
+        path = QtWidgets.QFileDialog.getOpenFileName(self, 'Datei öffnen', '.', 'JSON (*.json)')[0]
+        if not isdir(dirname(path)):
+            self.statusBar().showMessage('Keine Datei geladen', 2000)
+            return 
+        
+        db = Database()
+        db.clear()   # setze die Datenbank zurück
+
+        with open(path, 'r') as f:
+            data = json.load(f)
+
+        self.statusBar().showMessage('Datenbank erfolgreich geladen', 2000)
+
+        db.change(data)
 
     def hline(self, fill='=', zl=66):
             return '; ' + fill*(zl-3) + '\n'
@@ -468,7 +525,6 @@ class MyApp(QtWidgets.QMainWindow):
             start_par = 'MG_PAR(1)\nM00\n'
 
             return '\n'.join([gen_out, gen_order, start_par])
-
 
 
 class PopUp(QtWidgets.QMainWindow):
