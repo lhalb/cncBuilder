@@ -4,13 +4,16 @@ Created on Wed Jun 20 11:15:32 2018
 
 Template zum Darstellen von .ui-Dateien, die mit QT designed wurden
 
+
+test
+
 @author: halbauer
 """
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from functools import partial
-import sys # We need sys so that we can pass argv to QApplication
+import sys 
 from PyQt5 import uic
 import numpy as np
 import re
