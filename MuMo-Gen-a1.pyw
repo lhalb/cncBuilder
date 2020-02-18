@@ -137,7 +137,6 @@ class MyApp(QtWidgets.QMainWindow):
         # db.reset('Definitionen')
         # print(db.get())
 
-
     def setup_triggers(self):
         self.ui.but_test_print.clicked.connect(self.get_mumo_data)
         self.ui.but_write_cnc.clicked.connect(self.write_mpf)
@@ -289,7 +288,6 @@ class MyApp(QtWidgets.QMainWindow):
         mumo_data, gen_rows = self.get_mumo_data()
 
         db.change({'Funktionsgenerator': {'Parameter': mumo_data, 'Order': gen_rows}})
-
 
     def export_db(self):
         db = Database()
