@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>281</width>
+    <height>273</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Programmkommentar</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Autor:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="txt_autor"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>HV:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="vSModusLabel">
+          <property name="text">
+           <string>VS-Modus:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QPushButton" name="but_comment">
+          <property name="text">
+           <string>Kommentar</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="datumLabel">
+          <property name="text">
+           <string>Datum</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QTextEdit" name="txt_kommentar"/>
+        </item>
+        <item row="3" column="1">
+         <widget class="QComboBox" name="cb_vs">
+          <item>
+           <property name="text">
+            <string>30V - Rechteck</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>30V - Dreieck</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>60V - Rechteck</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>60V - Dreieck</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="cb_hv">
+          <item>
+           <property name="text">
+            <string>60 kV</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>80 kV</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="txt_datum"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QDialogButtonBox" name="but_box">
+        <property name="standardButtons">
+         <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>281</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <tabstops>
+  <tabstop>txt_autor</tabstop>
+  <tabstop>txt_datum</tabstop>
+  <tabstop>cb_hv</tabstop>
+  <tabstop>cb_vs</tabstop>
+  <tabstop>txt_kommentar</tabstop>
+  <tabstop>but_comment</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>but_box</sender>
+   <signal>rejected()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>140</x>
+     <y>198</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>140</x>
+     <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

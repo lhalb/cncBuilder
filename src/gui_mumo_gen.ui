@@ -1,0 +1,1416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1068</width>
+    <height>701</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>100</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>CNC-Prozesserstellung</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_7">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QGroupBox" name="prozesseinstellungen">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="title">
+         <string>CNC-Prozesseinstellungen</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <layout class="QGridLayout" name="prozessart">
+             <item row="1" column="0">
+              <widget class="QCheckBox" name="check_ci">
+               <property name="text">
+                <string>CI-Prozess</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QCheckBox" name="check_flash">
+               <property name="text">
+                <string>Flash-Prozess</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLineEdit" name="txt_proz_name">
+               <property name="placeholderText">
+                <string>Prozessname</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="bewegung">
+             <item row="2" column="0">
+              <widget class="QCheckBox" name="check_susv">
+               <property name="text">
+                <string>Mit Strahlpendelung</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QCheckBox" name="check_xy">
+               <property name="text">
+                <string>Mit Bahnbewegung</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QCheckBox" name="check_no_xy">
+               <property name="text">
+                <string>Ohne Bahnbewegung</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="bewegungsart">
+             <item row="2" column="0">
+              <widget class="QCheckBox" name="cb_lin_auto">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fahre ohne Einrichtung in eine bestimmte Richtung.&lt;/p&gt;&lt;p&gt;ELO wird nur zum Anfahren der Anfangsposition genutzt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Linear Auto</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QRadioButton" name="check_circular">
+               <property name="text">
+                <string>Kreisförmig</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QRadioButton" name="check_linear">
+               <property name="text">
+                <string>Linear</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="regelung">
+             <item row="0" column="0">
+              <widget class="QRadioButton" name="check_reg">
+               <property name="text">
+                <string>Mit Regelung</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QRadioButton" name="check_no_reg">
+               <property name="text">
+                <string>Ohne Regelung</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="einrichtung">
+             <item row="0" column="0">
+              <widget class="QCheckBox" name="check_elo">
+               <property name="text">
+                <string>ELO</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QCheckBox" name="check_pos">
+               <property name="text">
+                <string>Pos.-Korrektur</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QCheckBox" name="check_sim">
+               <property name="text">
+                <string>Simulation</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="pos_korr">
+             <item row="0" column="0">
+              <widget class="QCheckBox" name="check_jog">
+               <property name="text">
+                <string>JOG-Modus</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QCheckBox" name="check_hdws">
+               <property name="text">
+                <string>SPS Handrad</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QCheckBox" name="check_mp">
+               <property name="text">
+                <string>Mittelpunktsuche</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QCheckBox" name="check_fusu">
+               <property name="text">
+                <string>Fugensuche</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="but_updateDB">
+             <property name="text">
+              <string>Update DB</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="grp_fugen">
+        <property name="title">
+         <string>Funktionsgenerator</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QRadioButton" name="rad_but_mumo">
+             <property name="text">
+              <string>MultiMode</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="rad_but_mimo">
+             <property name="text">
+              <string>MiniMode</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QPushButton" name="but_comment">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dialog zur Erstellung des Programmkommentars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Programmkommentar</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="but_cnc_para">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zur Anzeige und Veränderung der aktuellen CNC-Parameter.&lt;/p&gt;&lt;p&gt;Mit einem Klick auf &amp;quot;OK&amp;quot; werden die Parameter in die Datenbank übernommen und geprüft, welche Variablen neu definiert werden müssen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>CNC-Parameter</string>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="but_cnc_preview">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Erzeugt eine Vorschau des aktuellen CNC-Programms&lt;/p&gt;&lt;p&gt;(erleichtert das Debugging)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>CNC-Vorschau</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="debug">
+          <property name="toolTip">
+           <string>Gibt den aktuellen Inhalt der Datenbank aus (nur für Debugging)</string>
+          </property>
+          <property name="text">
+           <string>Debug</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="minimod_para">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>111</height>
+       </size>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In diesem Dialog werden die Parameter der Funktionsgeneratoren der Minimode gesetzt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="title">
+       <string>MiniMod Einstellungen</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <item>
+          <widget class="QTableWidget" name="tab_xy">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>75</height>
+            </size>
+           </property>
+           <property name="lineWidth">
+            <number>0</number>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <attribute name="horizontalHeaderDefaultSectionSize">
+            <number>86</number>
+           </attribute>
+           <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="horizontalHeaderStretchLastSection">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="verticalHeaderDefaultSectionSize">
+            <number>26</number>
+           </attribute>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <column>
+            <property name="text">
+             <string>Index</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>FIG</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>SWY [mm]</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>FRQ [Hz]</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>PVZH</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>PVZL</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>VEK [°]</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <item row="0" column="0">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item row="0" column="1">
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+           <item row="0" column="2">
+            <property name="text">
+             <string>10</string>
+            </property>
+           </item>
+           <item row="0" column="3">
+            <property name="text">
+             <string>10</string>
+            </property>
+           </item>
+           <item row="0" column="4">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item row="0" column="5">
+            <property name="text">
+             <string>10</string>
+            </property>
+           </item>
+           <item row="0" column="6">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item row="1" column="0">
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item row="1" column="1">
+            <property name="text">
+             <string>3</string>
+            </property>
+           </item>
+           <item row="1" column="2">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item row="1" column="3">
+            <property name="text">
+             <string>10</string>
+            </property>
+           </item>
+           <item row="1" column="4">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item row="1" column="5">
+            <property name="text">
+             <string>100</string>
+            </property>
+           </item>
+           <item row="1" column="6">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="gen_versch">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="title">
+            <string>Generatorenverschaltung</string>
+           </property>
+           <property name="checkable">
+            <bool>false</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <layout class="QGridLayout" name="gridLayout">
+              <item row="1" column="1">
+               <widget class="QRadioButton" name="radioButton_2">
+                <property name="text">
+                 <string>Offset</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QRadioButton" name="radioButton">
+                <property name="text">
+                 <string>Amplitude</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QCheckBox" name="checkBox_3">
+                <property name="text">
+                 <string>Aktiv</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="multimode_para">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>In diesem Dialog werden die Parameter der Funktionsgeneratoren der MultiMode gesetzt.</string>
+      </property>
+      <property name="title">
+       <string>MultiMod Einstellungen</string>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QTableWidget" name="tab_gen">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>150</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>990</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAsNeeded</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAsNeeded</enum>
+           </property>
+           <property name="sizeAdjustPolicy">
+            <enum>QAbstractScrollArea::AdjustIgnored</enum>
+           </property>
+           <property name="autoScroll">
+            <bool>false</bool>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="sortingEnabled">
+            <bool>true</bool>
+           </property>
+           <property name="cornerButtonEnabled">
+            <bool>false</bool>
+           </property>
+           <attribute name="horizontalHeaderCascadingSectionResizes">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="horizontalHeaderDefaultSectionSize">
+            <number>85</number>
+           </attribute>
+           <attribute name="horizontalHeaderHighlightSections">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="horizontalHeaderStretchLastSection">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="verticalHeaderDefaultSectionSize">
+            <number>26</number>
+           </attribute>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+            <property name="toolTip">
+             <string>XY Hauptgenerator (nur für 16 Generator-Betrieb)</string>
+            </property>
+            <property name="background">
+             <color alpha="30">
+              <red>181</red>
+              <green>18</green>
+              <blue>62</blue>
+             </color>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Neue Zeile</string>
+            </property>
+           </row>
+           <column>
+            <property name="text">
+             <string>Index</string>
+            </property>
+            <property name="toolTip">
+             <string>Nummer der Generatoren</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="textAlignment">
+             <set>AlignCenter</set>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Figure</string>
+            </property>
+            <property name="toolTip">
+             <string>Ablenkfigur (aus XY Speicherbereich)</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="textAlignment">
+             <set>AlignCenter</set>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>SWX [mm]</string>
+            </property>
+            <property name="toolTip">
+             <string>Figurbreite X</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>SWY [mm]</string>
+            </property>
+            <property name="toolTip">
+             <string>Figurhöhe Y</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>DC X [mm]</string>
+            </property>
+            <property name="toolTip">
+             <string>X-Offset</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>DC Y [mm]</string>
+            </property>
+            <property name="toolTip">
+             <string>Y-Offset</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>DC Z [mm]</string>
+            </property>
+            <property name="toolTip">
+             <string>Z-Offset (Linse)</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>SLC [µs]</string>
+            </property>
+            <property name="toolTip">
+             <string>Zeitscheibe (sollte ganzz. Vielfaches der PVZ sein.</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>PVZ [µs]</string>
+            </property>
+            <property name="toolTip">
+             <string>Punktverzögerung der Figur (Vielfaches von 10 ns)</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>VEK [°]</string>
+            </property>
+            <property name="toolTip">
+             <string>Figurverktor</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <item row="0" column="0">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item row="0" column="1">
+            <property name="text">
+             <string/>
+            </property>
+           </item>
+           <item row="0" column="2">
+            <property name="text">
+             <string/>
+            </property>
+           </item>
+           <item row="0" column="3">
+            <property name="text">
+             <string/>
+            </property>
+           </item>
+           <item row="0" column="4">
+            <property name="text">
+             <string/>
+            </property>
+           </item>
+           <item row="1" column="0">
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item row="1" column="1">
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+           <item row="1" column="2">
+            <property name="text">
+             <string>20</string>
+            </property>
+           </item>
+           <item row="1" column="3">
+            <property name="text">
+             <string>20</string>
+            </property>
+           </item>
+           <item row="1" column="4">
+            <property name="text">
+             <string>-10</string>
+            </property>
+           </item>
+           <item row="1" column="5">
+            <property name="text">
+             <string>10</string>
+            </property>
+           </item>
+           <item row="1" column="6">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item row="1" column="7">
+            <property name="text">
+             <string>10000</string>
+            </property>
+           </item>
+           <item row="1" column="8">
+            <property name="text">
+             <string>100</string>
+            </property>
+           </item>
+           <item row="1" column="9">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item row="2" column="0">
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+           <item row="2" column="1">
+            <property name="text">
+             <string>5</string>
+            </property>
+           </item>
+           <item row="2" column="2">
+            <property name="text">
+             <string>20</string>
+            </property>
+           </item>
+           <item row="2" column="3">
+            <property name="text">
+             <string>20</string>
+            </property>
+           </item>
+           <item row="2" column="4">
+            <property name="text">
+             <string>10</string>
+            </property>
+           </item>
+           <item row="2" column="5">
+            <property name="text">
+             <string>-10</string>
+            </property>
+           </item>
+           <item row="2" column="6">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item row="2" column="7">
+            <property name="text">
+             <string>10000</string>
+            </property>
+           </item>
+           <item row="2" column="8">
+            <property name="text">
+             <string>100</string>
+            </property>
+           </item>
+           <item row="2" column="9">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item row="3" column="0">
+            <property name="text">
+             <string>3</string>
+            </property>
+           </item>
+           <item row="3" column="1">
+            <property name="text">
+             <string>7</string>
+            </property>
+           </item>
+           <item row="3" column="2">
+            <property name="text">
+             <string>20</string>
+            </property>
+           </item>
+           <item row="3" column="3">
+            <property name="text">
+             <string>20</string>
+            </property>
+           </item>
+           <item row="3" column="4">
+            <property name="text">
+             <string>10</string>
+            </property>
+           </item>
+           <item row="3" column="5">
+            <property name="text">
+             <string>10</string>
+            </property>
+           </item>
+           <item row="3" column="6">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item row="3" column="7">
+            <property name="text">
+             <string>10000</string>
+            </property>
+           </item>
+           <item row="3" column="8">
+            <property name="text">
+             <string>10</string>
+            </property>
+           </item>
+           <item row="3" column="9">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item row="4" column="0">
+            <property name="text">
+             <string>4</string>
+            </property>
+           </item>
+           <item row="4" column="1">
+            <property name="text">
+             <string>13</string>
+            </property>
+           </item>
+           <item row="4" column="2">
+            <property name="text">
+             <string>20</string>
+            </property>
+           </item>
+           <item row="4" column="3">
+            <property name="text">
+             <string>20</string>
+            </property>
+           </item>
+           <item row="4" column="4">
+            <property name="text">
+             <string>-10</string>
+            </property>
+           </item>
+           <item row="4" column="5">
+            <property name="text">
+             <string>-10</string>
+            </property>
+           </item>
+           <item row="4" column="6">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item row="4" column="7">
+            <property name="text">
+             <string>10000</string>
+            </property>
+           </item>
+           <item row="4" column="8">
+            <property name="text">
+             <string>10</string>
+            </property>
+           </item>
+           <item row="4" column="9">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item row="5" column="0">
+            <property name="text">
+             <string>5</string>
+            </property>
+           </item>
+           <item row="6" column="0">
+            <property name="text">
+             <string>6</string>
+            </property>
+           </item>
+           <item row="7" column="0">
+            <property name="text">
+             <string>7</string>
+            </property>
+           </item>
+           <item row="8" column="0">
+            <property name="text">
+             <string>8</string>
+            </property>
+           </item>
+           <item row="9" column="0">
+            <property name="text">
+             <string>9</string>
+            </property>
+           </item>
+           <item row="10" column="0">
+            <property name="text">
+             <string>10</string>
+            </property>
+           </item>
+           <item row="11" column="0">
+            <property name="text">
+             <string>11</string>
+            </property>
+           </item>
+           <item row="12" column="0">
+            <property name="text">
+             <string>12</string>
+            </property>
+           </item>
+           <item row="13" column="0">
+            <property name="text">
+             <string>13</string>
+            </property>
+           </item>
+           <item row="14" column="0">
+            <property name="text">
+             <string>14</string>
+            </property>
+           </item>
+           <item row="15" column="0">
+            <property name="text">
+             <string>15</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QLabel" name="label_gen_order">
+             <property name="text">
+              <string>Generator-Reihenfolge</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="txt_gen_order">
+             <property name="text">
+              <string>1 2 3 3 </string>
+             </property>
+             <property name="placeholderText">
+              <string>1 2 3</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Testoutput</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="testout">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="but_test_print">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Print Value</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Expanding</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="but_write_reg">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Schreibe Register</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="but_write_cnc">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Schreibe CNC</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="but_quit">
+        <property name="text">
+         <string>Quit</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1068</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuDatei">
+    <property name="title">
+     <string>Prozess</string>
+    </property>
+    <addaction name="actionNew"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionLoad"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <addaction name="menuDatei"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionNew">
+   <property name="text">
+    <string>Neu</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Speichern</string>
+   </property>
+  </action>
+  <action name="actionLoad">
+   <property name="text">
+    <string>Laden</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Schließen</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>actionQuit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>508</x>
+     <y>455</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>but_quit</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>869</x>
+     <y>659</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>458</x>
+     <y>350</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
