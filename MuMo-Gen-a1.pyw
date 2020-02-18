@@ -16,10 +16,10 @@ import numpy as np
 import re
 
 
-design_file = 'src/ui/gui_mumo_gen.ui'      # <-- Insert Python File of UI
-pop_up = 'src/ui/para-dia.ui'
-comments = 'src/ui/comments.ui'
-preview = 'src/ui/textviewer.ui'
+design_file = 'src/gui_mumo_gen.ui'      # <-- Insert Python File of UI
+pop_up = 'src/para-dia.ui'
+comments = 'src/comments.ui'
+preview = 'src/textviewer.ui'
 
 MainWindow = uic.loadUiType(design_file)[0]
 ParaDialog = uic.loadUiType(pop_up)[0]   # lädt nur die Klasse des Designs
