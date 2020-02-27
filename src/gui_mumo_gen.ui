@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>810</width>
-    <height>719</height>
+    <width>883</width>
+    <height>874</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -33,314 +33,436 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="QGroupBox" name="groupBox">
-           <property name="title">
-            <string>Bewegungsart</string>
+          <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <property name="topMargin">
+            <number>0</number>
            </property>
-           <property name="checkable">
-            <bool>false</bool>
+           <property name="rightMargin">
+            <number>0</number>
            </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_6">
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_8">
-              <item>
-               <layout class="QGridLayout" name="prozessart">
-                <item row="1" column="0">
-                 <widget class="QRadioButton" name="check_ci">
-                  <property name="text">
-                   <string>CI-Prozess</string>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_7">
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QGroupBox" name="groupBox_4">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="title">
+                  <string>Grundprozess</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_11">
+                  <property name="leftMargin">
+                   <number>11</number>
                   </property>
+                  <item>
+                   <widget class="QRadioButton" name="cb_ci">
+                    <property name="text">
+                     <string>CI-Prozess</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QRadioButton" name="cb_flash">
+                    <property name="text">
+                     <string>Flash-Prozess</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="txt_proz_name">
+                    <property name="placeholderText">
+                     <string>Prozessname (EBS, EBU, EBH, etc)</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="groupBox_5">
+                 <property name="title">
+                  <string>Ansteuerung</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_12">
+                  <item>
+                   <widget class="QRadioButton" name="cb_xy">
+                    <property name="text">
+                     <string>X/Y</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QRadioButton" name="cb_susv">
+                    <property name="text">
+                     <string>SU/SV</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="groupBox_6">
+                 <property name="title">
+                  <string>Form</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_13">
+                  <item>
+                   <widget class="QRadioButton" name="rb_circ">
+                    <property name="text">
+                     <string>Kreisförmig</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QRadioButton" name="rb_lin">
+                    <property name="text">
+                     <string>Linear</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QRadioButton" name="rb_rad">
+                    <property name="text">
+                     <string>Radial</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="groupBox_7">
+                 <property name="title">
+                  <string>Richtung</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_14">
+                  <item>
+                   <widget class="QCheckBox" name="cb_auto">
+                    <property name="toolTip">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fahre ohne Einrichtung in eine bestimmte Richtung.&lt;/p&gt;&lt;p&gt;ELO wird nur zum Anfahren der Anfangsposition genutzt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                    <property name="text">
+                     <string>Auto</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QRadioButton" name="rb_dir_x">
+                    <property name="text">
+                     <string>X</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QRadioButton" name="rb_dir_y">
+                    <property name="text">
+                     <string>Y</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="groupBox_8">
+                 <property name="title">
+                  <string>Vorzeichen</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_15">
+                  <item>
+                   <widget class="QRadioButton" name="rb_cw">
+                    <property name="text">
+                     <string>CW</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QRadioButton" name="rb_ccw">
+                    <property name="text">
+                     <string>CCW</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_3">
+               <property name="title">
+                <string>Zusatzmodule</string>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <item>
+                 <widget class="QGroupBox" name="groupBox">
+                  <property name="title">
+                   <string>ELO</string>
+                  </property>
+                  <property name="flat">
+                   <bool>false</bool>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_9">
+                   <item>
+                    <widget class="QRadioButton" name="rb_jog">
+                     <property name="text">
+                      <string>JOG-Modus</string>
+                     </property>
+                     <property name="checked">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QRadioButton" name="rb_hdws">
+                     <property name="text">
+                      <string>SPS Handrad</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </widget>
                 </item>
-                <item row="2" column="0">
-                 <widget class="QRadioButton" name="check_flash">
-                  <property name="text">
-                   <string>Flash-Prozess</string>
+                <item>
+                 <layout class="QGridLayout" name="gridLayout_2">
+                  <property name="leftMargin">
+                   <number>0</number>
                   </property>
-                 </widget>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="horizontalSpacing">
+                   <number>7</number>
+                  </property>
+                  <item row="2" column="1">
+                   <widget class="QCheckBox" name="cb_pos">
+                    <property name="text">
+                     <string>Pos.-kontrolle</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QCheckBox" name="cb_heften">
+                    <property name="toolTip">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fährt die Prozesskontur mit den Heftparametern ab.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Parameter:  &lt;/p&gt;&lt;p&gt;	_SQh: Heft-Strahlstrom&lt;/p&gt;&lt;p&gt;	_SLh: Heft-Linsenstrom&lt;/p&gt;&lt;p&gt;	_Fh: Heft-Geschwindigkeit&lt;/p&gt;&lt;p&gt;	_FRQh, _SWXh, _SWYh: Figurparameter Heften&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                    <property name="text">
+                     <string>Heften</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QCheckBox" name="cb_fusu">
+                    <property name="text">
+                     <string>Fugensuche</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QCheckBox" name="cb_mp">
+                    <property name="text">
+                     <string>Mittelpunktsuche</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="QCheckBox" name="cb_vorwaerm">
+                    <property name="toolTip">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ruft die Vorwärm-Routine auf.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Benötigt: &lt;/p&gt;&lt;p&gt;- Regelung&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Parameter:&lt;/p&gt;&lt;p&gt;	_SQw: Vorwärmstrahlstrom&lt;/p&gt;&lt;p&gt;	_SLw: Vorwärmlinse&lt;/p&gt;&lt;p&gt;	_FIGw, _SWXw, _SWYw: Vorwärm-Figurparameter&lt;/p&gt;&lt;p&gt;	_T_vor: Vorwärmtemperatur&lt;/p&gt;&lt;p&gt;	_tw: Zeit, für die _T_vor gehalten werden soll&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                    <property name="text">
+                     <string>Vorwärmen</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QCheckBox" name="cb_vorpos">
+                    <property name="toolTip">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fährt zu Beginn des Programms auf eine festgelegte Ausgangsposition.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Parameter: &lt;/p&gt;&lt;p&gt;	X-Position: R111&lt;/p&gt;&lt;p&gt;	Y-Position: R112&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                    <property name="text">
+                     <string>Vorpositionierung</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </item>
-                <item row="3" column="0">
-                 <widget class="QLineEdit" name="txt_proz_name">
-                  <property name="placeholderText">
-                   <string>Prozessname (EBS, EBU, EBH, etc)</string>
+                <item>
+                 <widget class="QGroupBox" name="groupBox_2">
+                  <property name="title">
+                   <string>Simulation</string>
                   </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                  <property name="checked">
+                   <bool>false</bool>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_17">
+                   <item>
+                    <widget class="QRadioButton" name="cb_sim_move">
+                     <property name="text">
+                      <string>Bewegung</string>
+                     </property>
+                     <property name="checked">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QRadioButton" name="cb_sim_sq">
+                     <property name="text">
+                      <string>Strahlstrom</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </widget>
                 </item>
                </layout>
-              </item>
-              <item>
-               <layout class="QGridLayout" name="bewegung">
-                <item row="2" column="0">
-                 <widget class="QRadioButton" name="check_susv">
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_10">
+             <property name="rightMargin">
+              <number>10</number>
+             </property>
+             <item>
+              <widget class="QGroupBox" name="groupBox_9">
+               <property name="title">
+                <string>Strahlstrom</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_5">
+                <item>
+                 <widget class="QRadioButton" name="rb_ib_ramp">
                   <property name="text">
-                   <string>Mit Strahlpendelung</string>
+                   <string>Rampe</string>
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="0">
-                 <widget class="QRadioButton" name="check_xy">
+                <item>
+                 <widget class="QRadioButton" name="rb_ib_const">
                   <property name="text">
-                   <string>Mit Tischbewegung</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QGridLayout" name="bewegungsart">
-                <item row="1" column="0">
-                 <widget class="QRadioButton" name="check_linear">
-                  <property name="text">
-                   <string>Linear</string>
+                   <string>Konstant</string>
                   </property>
                   <property name="checked">
                    <bool>true</bool>
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="0">
-                 <widget class="QRadioButton" name="check_circular">
-                  <property name="text">
-                   <string>Kreisförmig</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="0">
-                 <widget class="QRadioButton" name="rad_but_radial">
-                  <property name="text">
-                   <string>Radial</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="1">
-                 <widget class="QRadioButton" name="rb_dir_y">
-                  <property name="text">
-                   <string>Y</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QCheckBox" name="cb_auto">
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fahre ohne Einrichtung in eine bestimmte Richtung.&lt;/p&gt;&lt;p&gt;ELO wird nur zum Anfahren der Anfangsposition genutzt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
-                  <property name="text">
-                   <string>Auto</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QRadioButton" name="rb_dir_x">
-                  <property name="text">
-                   <string>X</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="2">
-                 <widget class="QRadioButton" name="rb_cw">
-                  <property name="text">
-                   <string>CW</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="2">
-                 <widget class="QRadioButton" name="rb_ccw">
-                  <property name="text">
-                   <string>CCW</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="2">
-                 <widget class="QLabel" name="label_2">
-                  <property name="text">
-                   <string>Richtung</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
-           <item>
-            <widget class="QGroupBox" name="groupBox_3">
-             <property name="title">
-              <string>Zusatzmodule</string>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_9">
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_11">
                 <item>
-                 <layout class="QGridLayout" name="pos_korr">
-                  <item row="0" column="2">
-                   <widget class="QCheckBox" name="check_mp">
-                    <property name="text">
-                     <string>Mittelpunktsuche</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="2">
-                   <widget class="QCheckBox" name="check_fusu">
-                    <property name="text">
-                     <string>Fugensuche</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="2">
-                   <widget class="QCheckBox" name="check_pos">
-                    <property name="text">
-                     <string>Pos.-kontrolle</string>
-                    </property>
-                   </widget>
-                  </item>
+                 <layout class="QFormLayout" name="formLayout">
+                  <property name="horizontalSpacing">
+                   <number>7</number>
+                  </property>
+                  <property name="verticalSpacing">
+                   <number>0</number>
+                  </property>
                   <item row="0" column="0">
-                   <widget class="QCheckBox" name="cb_vorpos">
+                   <widget class="QRadioButton" name="rb_ib_ext">
                     <property name="text">
-                     <string>Vorpositionierung</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="3">
-                   <widget class="QCheckBox" name="cb_sim_sq">
-                    <property name="text">
-                     <string>Strahlstrom</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="3">
-                   <widget class="QCheckBox" name="check_sim">
-                    <property name="text">
-                     <string>Simulation</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="3">
-                   <widget class="QCheckBox" name="cb_sim_move">
-                    <property name="text">
-                     <string>Bewegung</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="1">
-                   <widget class="QRadioButton" name="rb_hdws">
-                    <property name="text">
-                     <string>SPS Handrad</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="1">
-                   <widget class="QRadioButton" name="rb_jog">
-                    <property name="text">
-                     <string>JOG-Modus</string>
+                     <string>Extern</string>
                     </property>
                    </widget>
                   </item>
                   <item row="0" column="1">
-                   <widget class="QCheckBox" name="check_elo">
+                   <widget class="QToolButton" name="tb_ib_ext">
                     <property name="text">
-                     <string>ELO</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0">
-                   <widget class="QCheckBox" name="cb_heften">
-                    <property name="text">
-                     <string>Heften</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="0">
-                   <widget class="QCheckBox" name="checkBox">
-                    <property name="text">
-                     <string>Vorwärmen</string>
+                     <string>...</string>
                     </property>
                    </widget>
                   </item>
                  </layout>
                 </item>
                </layout>
-              </item>
-             </layout>
-            </widget>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="gb_reg">
+               <property name="title">
+                <string>Regelung</string>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_16">
+                <item>
+                 <widget class="QCheckBox" name="cb_t_ab">
+                  <property name="text">
+                   <string>Abkühlrate</string>
+                  </property>
+                  <property name="checked">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="cb_check_only">
+                  <property name="text">
+                   <string>nur messen</string>
+                  </property>
+                  <property name="checked">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="cb_t_auf">
+                  <property name="text">
+                   <string>Aufheizrate</string>
+                  </property>
+                  <property name="checked">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </item>
         </layout>
        </widget>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_10">
-        <property name="rightMargin">
-         <number>10</number>
-        </property>
-        <item>
-         <widget class="QGroupBox" name="groupBox_2">
-          <property name="title">
-           <string>Regelung</string>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_10">
-           <item>
-            <layout class="QGridLayout" name="regelung">
-             <item row="0" column="0">
-              <widget class="QRadioButton" name="check_reg">
-               <property name="text">
-                <string>Mit Regelung</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QRadioButton" name="check_no_reg">
-               <property name="text">
-                <string>Ohne Regelung</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="grp_fugen">
-          <property name="title">
-           <string>Funktionsgenerator</string>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_6">
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_5">
-             <item>
-              <widget class="QRadioButton" name="rad_but_mumo">
-               <property name="text">
-                <string>MultiMode</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="rad_but_mimo">
-               <property name="text">
-                <string>MiniMode</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
       </item>
       <item>
        <spacer name="horizontalSpacer_4">
@@ -357,6 +479,19 @@
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item>
          <widget class="QPushButton" name="but_updateDB">
           <property name="text">
@@ -410,7 +545,70 @@
           </property>
          </widget>
         </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
        </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_13">
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QGroupBox" name="grp_fugen">
+        <property name="title">
+         <string>Funktionsgenerator</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_11">
+           <item>
+            <widget class="QRadioButton" name="rad_but_mimo">
+             <property name="text">
+              <string>MiniMode</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="rad_but_mumo">
+             <property name="text">
+              <string>MultiMode</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_5">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </item>
@@ -457,7 +655,7 @@
           <widget class="QTableWidget" name="tab_xy">
            <property name="minimumSize">
             <size>
-             <width>0</width>
+             <width>625</width>
              <height>0</height>
             </size>
            </property>
@@ -479,11 +677,11 @@
            <property name="alternatingRowColors">
             <bool>true</bool>
            </property>
-           <attribute name="horizontalHeaderDefaultSectionSize">
-            <number>86</number>
-           </attribute>
            <attribute name="horizontalHeaderMinimumSectionSize">
             <number>71</number>
+           </attribute>
+           <attribute name="horizontalHeaderDefaultSectionSize">
+            <number>86</number>
            </attribute>
            <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
             <bool>true</bool>
@@ -495,7 +693,7 @@
             <bool>false</bool>
            </attribute>
            <attribute name="verticalHeaderDefaultSectionSize">
-            <number>22</number>
+            <number>26</number>
            </attribute>
            <row>
             <property name="text">
@@ -657,44 +855,46 @@
           </widget>
          </item>
          <item>
+          <spacer name="horizontalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
           <widget class="QGroupBox" name="gen_versch">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <property name="title">
-            <string>Generatorenverschaltung</string>
+            <string>GEN1()</string>
            </property>
            <property name="checkable">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="checked">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <layout class="QVBoxLayout" name="verticalLayout_18">
             <item>
-             <layout class="QGridLayout" name="gridLayout">
-              <item row="1" column="1">
-               <widget class="QRadioButton" name="radioButton_2">
-                <property name="text">
-                 <string>Offset</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QRadioButton" name="radioButton">
-                <property name="text">
-                 <string>Amplitude</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <widget class="QCheckBox" name="checkBox_3">
-                <property name="text">
-                 <string>Aktiv</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
+             <widget class="QRadioButton" name="radioButton">
+              <property name="text">
+               <string>Amplitude</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="radioButton_2">
+              <property name="text">
+               <string>Offset</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -1452,8 +1652,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>810</width>
-     <height>21</height>
+     <width>883</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDatei">

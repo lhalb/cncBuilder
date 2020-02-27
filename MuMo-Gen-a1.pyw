@@ -207,6 +207,7 @@ class MyApp(QtWidgets.QMainWindow):
         if rb.text() == 'MiniMode':
             self.ui.multimode_para.setEnabled(False)
             self.ui.minimod_para.setEnabled(True)
+        
                
     def print_to_line(self):
         text = self.ui.tab_gen.item(1, 1).text()
