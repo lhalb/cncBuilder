@@ -18,11 +18,14 @@ IF _EBX
     REPEAT START_PULS END_PULS
   ENDIF
   M00
+  --> Abrollvorrichtung AN
   REPEAT START_EBX END_EBX
+  --> Abrollvorrichtung AUS
   REPEAT START_QUIT_GENERATOR END_QUIT_GENERATOR
   IF _PULS
     REPEAT START_QUIT_PULS END_QUIT_PULS
   ENDIF
+  
 ENDIF
 
 M02
@@ -30,6 +33,18 @@ M02
 ;                            ENDE Hauptprogramm
 ; =============================================================================
 
+
+
+-----------------
+Behandlungstext sollte der Rückgabewert einer Funktion sein
+
+    BSP:   def parse_behandlung(typ='CI', ansteuerung=None, form=None, Richtung='X', auto_richt='False', vz='CCW', ib_typ='const'):
+                if typ == 'CI':
+                    ....
+                    --> hier 
+                string = ...
+
+                return string
 
 ; -------- EBX --------
 START_EBX:

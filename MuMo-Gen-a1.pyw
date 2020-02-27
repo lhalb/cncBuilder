@@ -18,7 +18,7 @@ from PyQt5 import uic
 import numpy as np
 import re
 import json
-from os.path import isdir, dirname
+from os.path import isdir, dirname, basename
 
 
 design_file = 'src/gui_mumo_gen.ui'      # <-- Insert Python File of UI
@@ -140,8 +140,12 @@ class MyApp(QtWidgets.QMainWindow):
     def setup_triggers(self):
         self.ui.but_test_print.clicked.connect(self.get_mumo_data)
         self.ui.but_write_cnc.clicked.connect(self.write_mpf)
-        self.ui.rad_but_mumo.toggled.connect(self.onClicked)
-        self.ui.rad_but_mimo.toggled.connect(self.onClicked)
+        self.ui.rb_mumo.toggled.connect(self.onClicked)
+        self.ui.rb_mimo.toggled.connect(self.onClicked)
+        self.ui.rb_ci.toggled.connect(self.onClicked)
+        self.ui.rb_flash.toggled.connect(self.onClicked)
+        self.ui.rb_xy.toggled.connect(self.onClicked)
+        self.ui.rb_susv.toggled.connect(self.onClicked)
         self.ui.but_cnc_para.clicked.connect(self.openParaView)
         self.ui.debug.clicked.connect(self.debug)
         self.ui.but_comment.clicked.connect(self.getcomment)
@@ -149,6 +153,13 @@ class MyApp(QtWidgets.QMainWindow):
         self.ui.but_updateDB.clicked.connect(self.update_db)
         self.ui.actionSave.triggered.connect(self.export_db)
         self.ui.actionLoad.triggered.connect(self.read_from_json)
+        self.ui.rb_reg.toggled.connect(self.onClicked)
+        self.ui.rb_check_only.toggled.connect(self.onClicked)
+        self.ui.rb_circ.toggled.connect(self.onClicked)
+        self.ui.rb_lin.toggled.connect(self.onClicked)
+        self.ui.rb_rad.toggled.connect(self.onClicked)
+        self.ui.tb_ext_cnc.clicked.connect(self.get_extern_cnc)
+        self.ui.tb_ib_ext.clicked.connect(self.get_extern_ib)
 
     def preview_cnc(self, text):
         self.prev = CNCPreview(text)
@@ -207,7 +218,74 @@ class MyApp(QtWidgets.QMainWindow):
         if rb.text() == 'MiniMode':
             self.ui.multimode_para.setEnabled(False)
             self.ui.minimod_para.setEnabled(True)
+        if rb.text() == 'Flash-Prozess':
+            self.ui.gb_ansteuer.setEnabled(False)
+            self.ui.gb_form.setEnabled(False)
+            self.ui.gb_richt.setEnabled(False)
+            self.ui.gb_vz.setEnabled(False)
+            self.ui.cb_heften.setEnabled(False)
+            self.ui.cb_sim_sq.setChecked(True)
+            self.ui.cb_sim_move.setEnabled(False)
+        if rb.text() == 'CI-Prozess':
+            self.ui.gb_ansteuer.setEnabled(True)
+            self.ui.gb_form.setEnabled(True)
+            self.ui.gb_richt.setEnabled(True)
+            self.ui.gb_vz.setEnabled(True)
+            self.ui.cb_heften.setEnabled(True)
+            self.ui.cb_sim_move.setEnabled(True)
+        if rb.text() == 'SU/SV':
+            self.ui.rb_rad.setEnabled(False)
+            self.ui.rb_check_only.setChecked(True)
+            self.ui.rb_reg.setEnabled(False)
+            self.ui.cb_t_ab.setEnabled(False)
+            self.ui.cb_t_auf.setEnabled(False)
+        if rb.text() == 'X/Y':
+            self.ui.rb_rad.setEnabled(True)
+            self.ui.rb_check_only.setChecked(False)
+            self.ui.rb_reg.setEnabled(True)
+        if rb.text() == 'Kreisförmig':
+            self.ui.rb_dir_x.setEnabled(False)
+            self.ui.rb_dir_y.setEnabled(False)
+            self.ui.rb_cw.setText('CW')
+            self.ui.rb_ccw.setText('CCW')
+            self.ui.cb_mp.setEnabled(True)
+            self.ui.cb_fusu.setEnabled(True)
+            self.ui.cb_pos.setEnabled(True)
+
+        if rb.text() == 'Linear':
+            self.ui.rb_dir_x.setEnabled(True)
+            self.ui.rb_dir_y.setEnabled(True)
+            self.ui.rb_cw.setText('+')
+            self.ui.rb_ccw.setText('-')
+            self.ui.cb_mp.setEnabled(False)
+            self.ui.cb_fusu.setEnabled(False)
+            self.ui.cb_pos.setEnabled(False)
+
+        if rb.text() == 'Radial':
+            self.ui.rb_dir_x.setEnabled(False)
+            self.ui.rb_dir_y.setEnabled(False)
+            self.ui.cb_mp.setEnabled(False)
+            self.ui.cb_fusu.setEnabled(False)
+            self.ui.cb_pos.setEnabled(False)
+            
+        if rb.text() == 'Messung':
+            self.ui.cb_t_ab.setEnabled(False)
+            self.ui.cb_t_auf.setEnabled(False)
+        if rb.text() == 'Regelung':
+            self.ui.cb_t_ab.setEnabled(True)
+            self.ui.cb_t_auf.setEnabled(True)
         
+
+    def get_extern_cnc(self):
+        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Externe CNC-Datei öffnen', 'c:\\',"CNC-Dateien (*.MPF)")[0]
+        self.ui.txt_ext_cnc.setText(basename(fname))
+        self.cnc_path = fname
+
+    def get_extern_ib(self):
+        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Externe CNC-Datei öffnen', 'c:\\',"Textdateien (*.txt *.rtf *.dat)")[0]
+        self.ui.txt_ext_ib.setText(basename(fname))
+        self.ib_curve_path = fname
+
                
     def print_to_line(self):
         text = self.ui.tab_gen.item(1, 1).text()
