@@ -1,0 +1,145 @@
+ # EBS-Programmbeispiel
+
+DEF BOOL _EBS = 1           ;- 1...Schweißen
+DEF BOOL _PULS = 0          ;- 1...Pulsbetrieb
+
+
+; =============================================================================
+;                              Hauptprogramm
+; =============================================================================
+
+INITIAL
+KALWERT(_Kalwert)
+
+IF _EBX
+  REPEAT START_VORBEREITUNG END_VORBEREITUNG
+  REPEAT START_GENERATOR END_GENERATOR
+  IF _PULS
+    REPEAT START_PULS END_PULS
+  ENDIF
+  M00
+  REPEAT START_EBX END_EBX
+  REPEAT START_QUIT_GENERATOR END_QUIT_GENERATOR
+  IF _PULS
+    REPEAT START_QUIT_PULS END_QUIT_PULS
+  ENDIF
+ENDIF
+
+M02
+; =============================================================================
+;                            ENDE Hauptprogramm
+; =============================================================================
+
+
+; -------- EBX --------
+START_EBX:
+    G1 G90 G64
+    X=_StrtPosX Y=_StrtPosX Fms _Fp   ;Anfahren Startpunkt
+    X=_VorX Y=_VorY Fms _Fs           ;zum Vorlauf
+    X=_StrtPosX Y=_StrtPosY           ;zu Beginn Upslope
+    X=_UpX Y=_UpY SQ SQs) SL _SLs) ;Upsl.
+    X=_DwnX Y=_DwnY          ;Schweissen
+    X=_ZielPosX Y=_ZielPosY SQ 0) Sl (_SLs+300)) ;Downsl.
+    X=_NachX Y=_NachY           ;Nachlauf
+    X=_ZielPosX Y=_ZielPosY          ;Endpunkt f. Kontrolle
+
+
+END_EBX:
+
+
+; -------- Vorbereitung --------
+START_VORBEREITUNG:
+    ;Berechne Ablenkpositionen
+    _lges=SQRT(POT(_ZielPosX-_StrtPosX)+POT(_ZielPosY-_StrtPosY))
+
+    _Phi=ATAN2((_ZielPosY-_StrtPosY),(_ZielPosX-_StrtPosX)) ;Winkel
+    ;Ende Upslope
+    _UpX=_StrtPosX+(_lUp*cos(_Phi))
+    _UpY=_StrtPosY+(_lUp*sin(_Phi))               
+    ;Beginn Downslope
+    _DwnX=_ZielPosX-(_lDwn*cos(_Phi))
+    _DwnY=_ZielPosY-(_lDwn*sin(_Phi))
+
+    ;Beginn Vorlauf
+    _VorX=_StrtPosX-(_lVor*cos(_Phi))               ;X
+    _VorY=_StrtPosY-(_lVor*sin(_Phi))               ;Y bzw. Z
+    ;Ende Nachlauf
+    _NachX=_ZielPosX+(_lNach*cos(_Phi))               ;X
+    _NachY=_ZielPosY+(_lNach*sin(_Phi))               ;Y bzw. Z
+
+    G0 SQ 0) SL _SLdwn)
+    IB100PROZENT
+
+
+END_VORBEREITUNG:
+
+
+; -------- Funktionsgenerator EIN --------
+START_GENERATOR:
+    --> hier entweder MuMo-Code oder MiMo-Code
+
+
+END_GENERATOR:
+
+
+; -------- Funktionsgenerator AUS --------
+START_QUIT_GENERATOR:
+    BSP: 
+    WRT(S_FIG , 6, S_SWX, 40, S_SWY, 40, S_FRQ, 0)
+    SNS
+
+    MM_GEN1(0)
+    
+    --> hier entweder MuMo-Code oder MiMo-Code
+
+
+END_QUIT_GENERATOR:
+
+
+
+; -------- Pulsen EIN --------
+START_PULS:
+    WRT(SQ_FRQ,_FRQpuls, SQ_TAST, _TAST)
+    SNS
+
+    IBPULS_EIN
+
+
+END_PULS:
+
+
+; -------- Pulsen AUS --------
+START_QUIT_PULS:
+    IBPULS_AUS
+
+
+END_QUIT_PULS:
+
+----------------------
+VAR PULSEN
+    FRQpuls, TAST
+----------------------
+
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+Für Lineare Bewegung + Behandlung
+
+ zu definieren:
+    ohne Parameter
+        lges, phi, upX, upY, DwnX, DwnY, VorX, VorY, NachX, NachY, 
+  
+    mit Parameter
+        SLoff, lUp, lDwn, lVor, lNach, versatz, SLdwn, SLup
+
+
+nicht definieren, aber parametrieren: 
+    SQs, Fs, SLs, SLo, SLs  
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+
+ 
