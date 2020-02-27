@@ -121,61 +121,60 @@ class MyApp(QtWidgets.QMainWindow):
         self.ui = MainWindow()
         self.ui.setupUi(self)
         self.setup_triggers()   # lade Events für Buttons
+        
         db = Database()
         db.load()
-        # db = Database()
-        # db.load()
-        # print(db.get())
-        # para = {
-        #     'Definitionen': 
-        #     {
-        #         'Variablen': ['_SWXg', '_Kalwert']
-        #     }
-        # }
-        # db.change(para)
-        # print(db.get())
-        # db.reset('Definitionen')
-        # print(db.get())
+        self.prev = CNCPreview(parent=self)
+        self.pop = PopUp(parent=self)
+        self.cd = Comments(parent=self)
 
     def setup_triggers(self):
+        # PushButtons
         self.ui.but_test_print.clicked.connect(self.get_mumo_data)
         self.ui.but_write_cnc.clicked.connect(self.write_mpf)
+        self.ui.but_cnc_para.clicked.connect(self.openParaView)
+        self.ui.debug.clicked.connect(self.debug)
+        self.ui.but_comment.clicked.connect(self.getcomment)
+        self.ui.but_cnc_preview.clicked.connect(partial(self.write_mpf, True))
+        self.ui.but_updateDB.clicked.connect(self.update_db)
+
+        # ToolButtons
+        self.ui.tb_ext_cnc.clicked.connect(self.get_extern_cnc)
+        self.ui.tb_ib_ext.clicked.connect(self.get_extern_ib)
+
+        # Actions
+        self.ui.actionSave.triggered.connect(self.export_db)
+        self.ui.actionLoad.triggered.connect(self.read_from_json)
+        
+        # Radiobuttons
+        self.ui.rb_reg.toggled.connect(self.onClicked)
+        self.ui.rb_check_only.toggled.connect(self.onClicked)
+        self.ui.rb_circ.toggled.connect(self.onClicked)
+        self.ui.rb_lin.toggled.connect(self.onClicked)
+        self.ui.rb_rad.toggled.connect(self.onClicked)
         self.ui.rb_mumo.toggled.connect(self.onClicked)
         self.ui.rb_mimo.toggled.connect(self.onClicked)
         self.ui.rb_ci.toggled.connect(self.onClicked)
         self.ui.rb_flash.toggled.connect(self.onClicked)
         self.ui.rb_xy.toggled.connect(self.onClicked)
         self.ui.rb_susv.toggled.connect(self.onClicked)
-        self.ui.but_cnc_para.clicked.connect(self.openParaView)
-        self.ui.debug.clicked.connect(self.debug)
-        self.ui.but_comment.clicked.connect(self.getcomment)
-        self.ui.but_cnc_preview.clicked.connect(partial(self.write_mpf, True))
-        self.ui.but_updateDB.clicked.connect(self.update_db)
-        self.ui.actionSave.triggered.connect(self.export_db)
-        self.ui.actionLoad.triggered.connect(self.read_from_json)
-        self.ui.rb_reg.toggled.connect(self.onClicked)
-        self.ui.rb_check_only.toggled.connect(self.onClicked)
-        self.ui.rb_circ.toggled.connect(self.onClicked)
-        self.ui.rb_lin.toggled.connect(self.onClicked)
-        self.ui.rb_rad.toggled.connect(self.onClicked)
-        self.ui.tb_ext_cnc.clicked.connect(self.get_extern_cnc)
-        self.ui.tb_ib_ext.clicked.connect(self.get_extern_ib)
+
 
     def preview_cnc(self, text):
-        self.prev = CNCPreview(text)
+        self.prev.set_cnc(text)
         self.prev.show()
 
     def debug(self):
         '''
             Diese Funktion wird nur fürs debugging benutzt. 
             Hier kommen alle Befehle rein, die getestet werden sollen.
-        '''
+        # '''
         db = Database()
         # db.load()
         print(db.get())
 
+
     def getcomment(self):
-        self.cd = Comments()
         self.cd.show()
 
     def get_geo(self):
@@ -189,7 +188,6 @@ class MyApp(QtWidgets.QMainWindow):
         return ag, sg, wg
 
     def openParaView(self):
-        self.pop = PopUp()
         self.setGeo()
         self.pop.show()
 
@@ -264,6 +262,8 @@ class MyApp(QtWidgets.QMainWindow):
         if rb.text() == 'Radial':
             self.ui.rb_dir_x.setEnabled(False)
             self.ui.rb_dir_y.setEnabled(False)
+            self.ui.rb_cw.setText('CW')
+            self.ui.rb_ccw.setText('CCW')
             self.ui.cb_mp.setEnabled(False)
             self.ui.cb_fusu.setEnabled(False)
             self.ui.cb_pos.setEnabled(False)
@@ -273,8 +273,7 @@ class MyApp(QtWidgets.QMainWindow):
             self.ui.cb_t_auf.setEnabled(False)
         if rb.text() == 'Regelung':
             self.ui.cb_t_ab.setEnabled(True)
-            self.ui.cb_t_auf.setEnabled(True)
-        
+            self.ui.cb_t_auf.setEnabled(True)        
 
     def get_extern_cnc(self):
         fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Externe CNC-Datei öffnen', 'c:\\',"CNC-Dateien (*.MPF)")[0]
@@ -285,8 +284,7 @@ class MyApp(QtWidgets.QMainWindow):
         fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Externe CNC-Datei öffnen', 'c:\\',"Textdateien (*.txt *.rtf *.dat)")[0]
         self.ui.txt_ext_ib.setText(basename(fname))
         self.ib_curve_path = fname
-
-               
+       
     def print_to_line(self):
         text = self.ui.tab_gen.item(1, 1).text()
         self.ui.testout.setText(text)
@@ -324,38 +322,56 @@ class MyApp(QtWidgets.QMainWindow):
         db = Database()
 
         config = {'Config': {
-            'CI': self.ui.check_ci.isChecked(),
-            'FLASH': self.ui.check_flash.isChecked(),
+            'CI': self.ui.rb_ci.isChecked(),
+            'FLASH': self.ui.rb_flash.isChecked(),
             'NAME': self.ui.txt_proz_name.text(),
-            'NOXY': self.ui.check_no_xy.isChecked(),
-            'XY': self.ui.check_xy.isChecked(),
-            'SUSV': self.ui.check_susv.isChecked(),
-            'CIRC': self.ui.check_circular.isChecked(),
-            'LIN': self.ui.check_linear.isChecked(),
-            'AUTOLIN': self.ui.cb_lin_auto.isChecked(),
-            'REG': self.ui.check_reg.isChecked(),
-            'ELO': self.ui.check_elo.isChecked(),
-            'POS': self.ui.check_pos.isChecked(),
-            'SIM': self.ui.check_sim.isChecked(),
-            'JOG': self.ui.check_jog.isChecked(),
-            'HDW': self.ui.check_hdws.isChecked(),
-            'MP': self.ui.check_mp.isChecked(),
-            'FUSU': self.ui.check_fusu.isChecked(),
-            'MUMO': self.ui.rad_but_mumo.isChecked(),
-            'MIMO': self.ui.rad_but_mimo.isChecked()
+            'XY': self.ui.rb_xy.isChecked(),
+            'SUSV': self.ui.rb_susv.isChecked(),
+            'CIRC': self.ui.rb_circ.isChecked(),
+            'LIN': self.ui.rb_lin.isChecked(),
+            'RAD': self.ui.rb_rad.isChecked(),
+            'AUTODIR': self.ui.cb_auto.isChecked(),
+            'DIR-X': self.ui.rb_dir_x.isChecked(),
+            'DIR-Y' : self.ui.rb_dir_y.isChecked(),
+            'CNC' : self.ui.rb_cnc_ext.isChecked(),
+            'CNC-TXT': self.ui.txt_ext_cnc.text(),
+            'CW': self.ui.rb_cw.isChecked(),
+            'CCW': self.ui.rb_ccw.isChecked(),
+            'IS-Rampe': self.ui.rb_ib_ramp.isChecked(),
+            'IS-CONST': self.ui.rb_ib_const.isChecked(),
+            'IS-EXT': self.ui.rb_ib_ext.isChecked(),
+            'TXT-IS': self.ui.txt_ext_ib.text(),
+            'PYRO': self.ui.gb_pyro.isChecked(),
+            'MESS': self.ui.rb_check_only.isChecked(),
+            'REG': self.ui.rb_reg.isChecked(),
+            'T-AB': self.ui.cb_t_ab.isChecked(),
+            'T-AUF': self.ui.cb_t_auf.isChecked(),
+            'ELO': self.ui.gb_elo.isChecked(),
+            'JOG': self.ui.rb_jog.isChecked(),
+            'HDWS': self.ui.rb_hdws.isChecked(),
+            'VORPOS': self.ui.cb_vorpos.isChecked(),
+            'HEFTEN': self.ui.cb_heften.isChecked(),
+            'VORWAERM': self.ui.cb_vorwaerm.isChecked(),
+            'ABROLL': self.ui.cb_abroll.isChecked(),
+            'MP': self.ui.cb_mp.isChecked(),
+            'FUSU': self.ui.cb_fusu.isChecked(),
+            'POS-KNTR': self.ui.cb_pos.isChecked(),
+            'END-KNTR': self.ui.cb_end_kontrolle.isChecked(),
+            'MUMO': self.ui.rb_mumo.isChecked(),
+            'MIMO': self.ui.rb_mimo.isChecked()
         }}
 
         db.change(config)
 
         par_ini = []
-        if self.ui.rad_but_mumo.isChecked():
+        if self.ui.rb_mumo.isChecked():
             par_ini.append(('REG[21]', 'INT'))
             par_ini.append(('REGDATA[20]', 'INT'))
             par_ini.append(('M_SEL[128]', 'CHAR'))
             par_ini.append(('M_SEL_CNT', 'CHAR'))
             # para_ini.append('DEF INT _REG[21]\nDEF INT _REGDATA[20]\nDEF CHAR M_SEL[128]\nDEF CHAR M_SEL_CNT\n')
 
-        if self.ui.check_reg.isChecked():
+        if self.ui.rb_reg.isEnabled() and self.ui.rb_reg.isChecked():
             par_ini.append(('PYR_INIT (INT)', 'EXTERN'))
             par_ini.append(('PYR_PAR[10]', 'REAL'))
         # Schreibe Werte in die Datenbank
@@ -399,6 +415,8 @@ class MyApp(QtWidgets.QMainWindow):
         self.statusBar().showMessage('Datenbank erfolgreich geladen', 2000)
 
         db.change(data)
+
+        # TODO: hier muss jetzt noch eingefügt werden, dass die GUI mit den Werten aus der Datenbank gefüllt wird.
 
     def hline(self, fill='=', zl=66):
             return '; ' + fill*(zl-3) + '\n'
@@ -592,7 +610,7 @@ class MyApp(QtWidgets.QMainWindow):
         data = db.get()
         fu = data['Funktionsgenerator']
 
-        if self.ui.rad_but_mumo.isChecked():
+        if self.ui.rb_mumo.isChecked():
             gen_data = [write_mumo_para(i) for i in fu['Parameter']]
             gen_out = '\n\n'.join(gen_data)
 
@@ -611,6 +629,7 @@ class PopUp(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.window = ParaDialog()
+        self.parent = parent            # damit Elemente aus dem Hauptfenster abgefragt werden können
         self.window.setupUi(self)
         self.setup_triggers_pop()
         self.load_values()
@@ -619,16 +638,69 @@ class PopUp(QtWidgets.QMainWindow):
         self.window.but_ok.clicked.connect(self.press_ok)
         self.window.but_update.clicked.connect(self.press_update)
         self.window.but_close.clicked.connect(self.press_close)
+        self.window.but_clear.clicked.connect(partial(self.write_to_tab, preclear=True))
     
     def load_values(self):
         db = Database()
         data = db.get()['Variablen']
 
+        self.write_to_tab(data, preclear=True)    
+
+    def row_to_append(self):
+        '''
+            finde die erste Spalte, die nicht beschrieben ist
+        '''
+        rows = self.window.tab_cnc_para.rowCount()
+        for row in range(rows):
+            try:
+                text = self.window.tab_cnc_para.item(row, 0).text()
+                if text == '':
+                    break
+            except AttributeError:
+                break
+            
+        return int(row)
+
+    def write_to_tab(self, args=None, start_row=0, preclear=False):
+        '''
+            Diese Funktion dient zum Beschreiben der Parametertabelle.
+            Man kann alle Daten überschreiben (Macht Sinn, wenn die Tabelle initialisiert werden soll)
+
+        '''
+        tab_columns = self.window.tab_cnc_para.columnCount()
+        defined_rows = self.row_to_append()
+
+        if preclear:
+             for row in range(defined_rows):
+                 for col in range(tab_columns):
+                     self.window.tab_cnc_para.item(row, col).setText('')
+
+        if not args:
+            return
+
+        add_rows = len(args)
+
+        # wenn weniger definierte als zu beschreibende Daten vorhanden sind
+        # oder
+        # wenn die Zeile, in der die Werte eingefügt werden sollen in einem Bereich liegt
+        # der noch nicht definiert ist
+        if (defined_rows < add_rows) or (start_row==defined_rows):
+            for row in range(len(args)):
+                for col in range(tab_columns):
+                    srow = start_row + row
+                    # falls Element (z. B. durch darauf klicken)
+                    if not self.window.tab_cnc_para.item(srow, col):
+                        item = QtWidgets.QTableWidgetItem()
+                        item.setText('')
+                        self.window.tab_cnc_para.setItem(srow, col, item)
+
+
         # iteriere über die Elemente der Variablen
-        for row, row_el in enumerate(data):
+        for row, row_el in enumerate(args):
             # iteriere über die Spalten und gib die Spaltenzahl und das Element zurück
             for col, el in enumerate(row_el):
-                self.window.tab_cnc_para.item(row, col).setText(el)    
+                self.window.tab_cnc_para.item(row+start_row, col).setText(el)  
+
 
     def press_ok(self):
         self.press_update()
@@ -664,7 +736,8 @@ class PopUp(QtWidgets.QMainWindow):
                 if td[0] not in data['Definitionen'][td[1]]: 
                     print(f'Folgende Variablen müssen zusätzlich definiert werden: {td[0]}')
                     db.append('Definitionen', td[0], td[1]) 
-            
+
+
 
         self.statusBar().showMessage('Messwerte übertragen', 2000)
 
@@ -702,7 +775,7 @@ class Comments(QtWidgets.QMainWindow):
     def load_values(self):
         '''
             Diese Funktion prüft, ob es Daten in der Datenbank gibt, die in die Kommentarspalten eingefügt werden können.
-            Das sorgt dafür, dass nach dem Srücken von "OK" alle Werte gespeichert werden und beim erneuten Öffnen des Fensters wieder zur Verfügung stehen. 
+            Das sorgt dafür, dass nach dem Drücken von "OK" alle Werte gespeichert werden und beim erneuten Öffnen des Fensters wieder zur Verfügung stehen. 
         '''
         db = Database()                 # instanziere Datenbank (zur Abfrage der Werte notwendig)
         data = db.get()['Comment']      # Lade den Block "Kommentare" aus der Datenbank
@@ -763,13 +836,33 @@ class Comments(QtWidgets.QMainWindow):
         if ok:
            self.com.txt_kommentar.setText(str(text)) 
 
-
-class CNCPreview(QtWidgets.QWidget):
-    def __init__(self, text, parent=None):
+class CNCPreview(QtWidgets.QMainWindow):
+    def __init__(self, parent=None):
         super().__init__(parent)
         self.pre = Preview()
         self.pre.setupUi(self)
+        self.setup_triggers_viewer()
+
+    def setup_triggers_viewer(self):
+        self.pre.actionExport.triggered.connect(self.export_cnc)
+
+    def set_cnc(self, text):
         self.pre.preview.setPlainText(text)
+
+    def export_cnc(self):
+        path = QtWidgets.QFileDialog.getSaveFileName(self, 'CNC-Datei exportieren', "DATEI.MPF", "MPF-Dateien (*.MPF)")[0]
+
+        if not isdir(dirname(path)):
+            self.statusBar().showMessage('Ungültiges Verzeichnis', 2000)
+            return 
+
+        with open(path, 'w') as f:
+            f.write(self.get_cnc())
+
+    def get_cnc(self):
+        # damit kann vom Hauptfenster aus auf den Inhalt der CNC-Vorschau zugegriffen werden
+        # nützlich, wenn man sich ein Grundgerüst des Codes erzeugt und kleinere Änderungen vornimmt.
+        return self.pre.preview.toPlainText()
     
 
 def main():

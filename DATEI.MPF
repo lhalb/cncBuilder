@@ -1,0 +1,62 @@
+;- Autor: Halbauer
+;- Datum: 01.01.2020
+;- Hochspannung: 80 kV
+
+
+DEF INT _REG[21], _REGDATA[20]
+DEF REAL _PYR_PAR[10]
+DEF CHAR _M_SEL[128], _M_SEL_CNT
+EXTERN PYR_INIT (INT)
+
+; ===============================================================
+;                       START Hauptprogramm                       
+; ===============================================================
+
+; ===============================================================
+;                       ENDE Hauptprogramm                       
+; ===============================================================
+
+MM_FIG[1] = 2
+MM_SWX[1] = 20
+MM_SWY[1] = 20
+MM_DCX[1] = -10
+MM_DCY[1] = 10
+MM_DCZ[1] = 0
+MM_SLC[1] = 10000
+MM_PVZ[1] = 100
+MM_VEK[1] = 0
+
+MM_FIG[2] = 5
+MM_SWX[2] = 20
+MM_SWY[2] = 20
+MM_DCX[2] = 10
+MM_DCY[2] = -10
+MM_DCZ[2] = 0
+MM_SLC[2] = 10000
+MM_PVZ[2] = 100
+MM_VEK[2] = 0
+
+MM_FIG[3] = 7
+MM_SWX[3] = 20
+MM_SWY[3] = 20
+MM_DCX[3] = 10
+MM_DCY[3] = 10
+MM_DCZ[3] = 0
+MM_SLC[3] = 10000
+MM_PVZ[3] = 10
+MM_VEK[3] = 0
+
+
+; -------------------- Generatorreihenfolge --------------------
+
+MM_SEL[0] = 1
+MM_SEL[1] = 2
+MM_SEL[2] = 3
+MM_SEL[3] = 3
+
+M_SEL_CNT = 4
+MG_PAR(1)
+M00
+
+MG_PAR(0)
+M02
