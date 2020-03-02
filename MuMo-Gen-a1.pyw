@@ -145,7 +145,8 @@ class MyApp(QtWidgets.QMainWindow):
         self.ui.but_updateDB.clicked.connect(self.update_db)
 
         # ToolButtons
-        self.ui.tb_ext_cnc.clicked.connect(self.get_extern_cnc)
+        self.ui.tb_ext_cnc.clicked.connect(self.get_extern)
+        self.ui.tb_ib_ext.clicked.connect(self.get_extern)
 
         # Actions
         self.ui.actionSave.triggered.connect(self.export_db)
@@ -166,6 +167,10 @@ class MyApp(QtWidgets.QMainWindow):
         self.ui.rb_cnc_ext.toggled.connect(self.onClicked)
         self.ui.rb_dir_x.toggled.connect(self.onClicked)
         self.ui.rb_dir_y.toggled.connect(self.onClicked)
+        self.ui.rb_ib_const.toggled.connect(self.onClicked)
+        self.ui.rb_ib_ramp.toggled.connect(self.onClicked)
+        self.ui.rb_ib_puls.toggled.connect(self.onClicked)
+        self.ui.rb_ib_ext.toggled.connect(self.onClicked)
 
     def preview_cnc(self, text):
         self.prev.set_cnc(text)
@@ -230,6 +235,7 @@ class MyApp(QtWidgets.QMainWindow):
             self.ui.cb_heften.setEnabled(False)
             self.ui.cb_sim_sq.setChecked(True)
             self.ui.cb_sim_move.setEnabled(False)
+            self.ui.gb_strahlstrom.setEnabled(True)
         if rb.text() == 'CI-Prozess':
             self.ui.gb_ansteuer.setEnabled(True)
             self.ui.gb_form.setEnabled(True)
@@ -285,6 +291,14 @@ class MyApp(QtWidgets.QMainWindow):
             self.ui.gb_strahlstrom.setEnabled(True)
             self.ui.txt_ext_cnc.setEnabled(False)
             self.ui.tb_ext_cnc.setEnabled(False)
+        if rb.text() == 'Extern':
+            self.ui.txt_ib_ext.setEnabled(True)
+            self.ui.tb_ib_ext.setEnabled(True)
+
+        if rb.text() in ['Rampe', 'Gepulst', 'Konstant']:
+            self.ui.txt_ib_ext.setEnabled(False)
+            self.ui.tb_ib_ext.setEnabled(False)
+
         if rb.text() == 'Messung':
             self.ui.cb_t_ab.setEnabled(False)
             self.ui.cb_t_auf.setEnabled(False)
@@ -292,10 +306,19 @@ class MyApp(QtWidgets.QMainWindow):
             self.ui.cb_t_ab.setEnabled(True)
             self.ui.cb_t_auf.setEnabled(True)        
 
-    def get_extern_cnc(self):
-        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Externe CNC-Datei öffnen', 'c:\\',"CNC-Dateien (*.MPF)")[0]
-        self.ui.txt_ext_cnc.setText(basename(fname))
-        self.cnc_path = fname
+    def get_extern(self):
+        tb = self.sender()
+        if tb.objectName() == 'tb_ext_cnc':
+            title = 'Externe CNC-Datei öffnen'
+            receiver = self.ui.txt_ext_cnc
+        if tb.objectName() == 'tb_ib_ext':
+            title = 'Externe Strahlstromdatei öffnen'
+            receiver = self.ui.txt_ib_ext
+        
+        files = 'CNC-Dateien (*.MPF)'
+        fname = QtWidgets.QFileDialog.getOpenFileName(self, title, 'c:\\', files)[0]
+        receiver.setText(basename(fname))
+        self.filepath = fname
 
        
     def print_to_line(self):
