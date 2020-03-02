@@ -106,12 +106,18 @@ class Database(Singleton):
                 'BOOL': [],
                 'EXTERN': []
             }, 
-            'Schalter': [
-                'VORPOS', 'ELO', 'EBS'
-            ],
+            'Schalter': {
+                'VORPOS':'Vorpositionieren', 
+                'ELO': 'ELO-Monitoring', 
+                'EBS': 'Schweißen',
+            },
             'Variablen':[
                 ['INT', 'KALWERT', '2255', 'Kalibrierwert', '-'],  
-            ]
+            ],
+            'Unterprogramme': {
+                'START_ELO': 'ELO wird aufgerufen',
+                'END_ELO': 'ELO wird beendet'
+            }
         }
 
 
@@ -140,7 +146,6 @@ class MyApp(QtWidgets.QMainWindow):
 
         # ToolButtons
         self.ui.tb_ext_cnc.clicked.connect(self.get_extern_cnc)
-        self.ui.tb_ib_ext.clicked.connect(self.get_extern_ib)
 
         # Actions
         self.ui.actionSave.triggered.connect(self.export_db)
@@ -158,7 +163,9 @@ class MyApp(QtWidgets.QMainWindow):
         self.ui.rb_flash.toggled.connect(self.onClicked)
         self.ui.rb_xy.toggled.connect(self.onClicked)
         self.ui.rb_susv.toggled.connect(self.onClicked)
-
+        self.ui.rb_cnc_ext.toggled.connect(self.onClicked)
+        self.ui.rb_dir_x.toggled.connect(self.onClicked)
+        self.ui.rb_dir_y.toggled.connect(self.onClicked)
 
     def preview_cnc(self, text):
         self.prev.set_cnc(text)
@@ -172,7 +179,6 @@ class MyApp(QtWidgets.QMainWindow):
         db = Database()
         # db.load()
         print(db.get())
-
 
     def getcomment(self):
         self.cd.show()
@@ -267,7 +273,18 @@ class MyApp(QtWidgets.QMainWindow):
             self.ui.cb_mp.setEnabled(False)
             self.ui.cb_fusu.setEnabled(False)
             self.ui.cb_pos.setEnabled(False)
-            
+        if rb.text() == 'CNC':
+            self.ui.gb_strahlstrom.setEnabled(False)
+            self.ui.txt_ext_cnc.setEnabled(True)
+            self.ui.tb_ext_cnc.setEnabled(True)
+        if rb.text() == 'X':
+            self.ui.gb_strahlstrom.setEnabled(True)
+            self.ui.txt_ext_cnc.setEnabled(False)
+            self.ui.tb_ext_cnc.setEnabled(False)
+        if rb.text() == 'Y':
+            self.ui.gb_strahlstrom.setEnabled(True)
+            self.ui.txt_ext_cnc.setEnabled(False)
+            self.ui.tb_ext_cnc.setEnabled(False)
         if rb.text() == 'Messung':
             self.ui.cb_t_ab.setEnabled(False)
             self.ui.cb_t_auf.setEnabled(False)
@@ -280,10 +297,6 @@ class MyApp(QtWidgets.QMainWindow):
         self.ui.txt_ext_cnc.setText(basename(fname))
         self.cnc_path = fname
 
-    def get_extern_ib(self):
-        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Externe CNC-Datei öffnen', 'c:\\',"Textdateien (*.txt *.rtf *.dat)")[0]
-        self.ui.txt_ext_ib.setText(basename(fname))
-        self.ib_curve_path = fname
        
     def print_to_line(self):
         text = self.ui.tab_gen.item(1, 1).text()
@@ -339,8 +352,6 @@ class MyApp(QtWidgets.QMainWindow):
             'CCW': self.ui.rb_ccw.isChecked(),
             'IS-Rampe': self.ui.rb_ib_ramp.isChecked(),
             'IS-CONST': self.ui.rb_ib_const.isChecked(),
-            'IS-EXT': self.ui.rb_ib_ext.isChecked(),
-            'TXT-IS': self.ui.txt_ext_ib.text(),
             'PYRO': self.ui.gb_pyro.isChecked(),
             'MESS': self.ui.rb_check_only.isChecked(),
             'REG': self.ui.rb_reg.isChecked(),
@@ -450,6 +461,40 @@ class MyApp(QtWidgets.QMainWindow):
         cnc_code = [commentstring, definitions, filler1, filler2, fu_gen_start, end_par]
 
         return '\n'.join(cnc_code)
+
+    def set_schalter(self, args):
+        '''
+            Dieser Funktion können Variablen für Schalter übergeben werden. 
+            Akzeptiertes Format: 
+            [
+                ['Variable 1', 'Name des Schalters 1'],
+                ['Variable 2', 'Name des Schalters 2']
+            ]
+        '''
+        return 
+
+    def compile_config(self):
+        schalter = []
+        variablen = []
+        # Am Anfang muss immer ein Prozess definiert werden
+        if self.ui.txt_proz_name.text() != '':
+            behandlung = self.ui.txt_proz_name.text()
+        else:
+            behandlung = 'PROZ'
+        schalter.append([behandlung, 'Prozess EIN'])
+        #
+        if self.ui.rb_ci.isChecked():
+            grund = [
+                ['REAL', 'Fs', '10', 'Vorschubgeschwindigkeit', 'mm/s']
+                ['INT', 'SLs', '1920', 'Linsenstrom', 'mA']
+                ['INT', 'SLoff', '0', 'Linsenstromoffset', 'mA']
+            ]
+
+            variablen.append(grund)
+        # if self.ui.rb_flash.isChecked():
+
+        return
+
 
     def write_definitions(self, l):
         db = Database()
