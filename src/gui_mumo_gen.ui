@@ -667,7 +667,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QGroupBox" name="groupBox_2">
+               <widget class="QGroupBox" name="gb_sim">
                 <property name="title">
                  <string>Simulation</string>
                 </property>
@@ -679,7 +679,7 @@
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_17">
                  <item>
-                  <widget class="QRadioButton" name="cb_sim_move">
+                  <widget class="QRadioButton" name="rb_sim_move">
                    <property name="text">
                     <string>Bewegung</string>
                    </property>
@@ -689,7 +689,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="cb_sim_sq">
+                  <widget class="QRadioButton" name="rb_sim_ib">
                    <property name="text">
                     <string>Strahlstrom</string>
                    </property>

@@ -50,10 +50,18 @@ class Database(Singleton):
         return self._data
 
     def change(self, *args):
+        '''
+            Wenn das Schlüsselwort bereits in der Datenbank ist --> Wert des Schlüssels aktualisieren
+        '''
         for arg in args:
             self._data.update(arg)
     
     def append(self, key, args, key2=None):
+        '''
+            Diese Funktion kann benutzt werden, um Werte in die Datenbank zu schreiben
+            Voraussetzung ist, dass der Schlüssel in der Datenbank existiert
+            TODO: try/except-Block einfügen, um update-Funktion aufzurufen, falls Key schon existiert.
+        '''
         if not key2:
             for arg in args:
                 self._data[key].append(arg)
@@ -224,35 +232,40 @@ class MyApp(QtWidgets.QMainWindow):
         if rb.text() == 'MultiMode':
             self.ui.minimod_para.setEnabled(False)
             self.ui.multimode_para.setEnabled(True)
+
         if rb.text() == 'MiniMode':
             self.ui.multimode_para.setEnabled(False)
             self.ui.minimod_para.setEnabled(True)
+
         if rb.text() == 'Flash-Prozess':
             self.ui.gb_ansteuer.setEnabled(False)
             self.ui.gb_form.setEnabled(False)
             self.ui.gb_richt.setEnabled(False)
             self.ui.gb_vz.setEnabled(False)
             self.ui.cb_heften.setEnabled(False)
-            self.ui.cb_sim_sq.setChecked(True)
-            self.ui.cb_sim_move.setEnabled(False)
+            self.ui.gb_sim.setEnabled(False)
             self.ui.gb_strahlstrom.setEnabled(True)
+
         if rb.text() == 'CI-Prozess':
             self.ui.gb_ansteuer.setEnabled(True)
+            self.ui.gb_sim.setEnabled(True)
             self.ui.gb_form.setEnabled(True)
             self.ui.gb_richt.setEnabled(True)
             self.ui.gb_vz.setEnabled(True)
             self.ui.cb_heften.setEnabled(True)
-            self.ui.cb_sim_move.setEnabled(True)
+
         if rb.text() == 'SU/SV':
             self.ui.rb_rad.setEnabled(False)
             self.ui.rb_check_only.setChecked(True)
             self.ui.rb_reg.setEnabled(False)
             self.ui.cb_t_ab.setEnabled(False)
             self.ui.cb_t_auf.setEnabled(False)
+
         if rb.text() == 'X/Y':
             self.ui.rb_rad.setEnabled(True)
             self.ui.rb_check_only.setChecked(False)
             self.ui.rb_reg.setEnabled(True)
+
         if rb.text() == 'Kreisförmig':
             self.ui.rb_dir_x.setEnabled(False)
             self.ui.rb_dir_y.setEnabled(False)
@@ -279,18 +292,22 @@ class MyApp(QtWidgets.QMainWindow):
             self.ui.cb_mp.setEnabled(False)
             self.ui.cb_fusu.setEnabled(False)
             self.ui.cb_pos.setEnabled(False)
+
         if rb.text() == 'CNC':
             self.ui.gb_strahlstrom.setEnabled(False)
             self.ui.txt_ext_cnc.setEnabled(True)
             self.ui.tb_ext_cnc.setEnabled(True)
+
         if rb.text() == 'X':
             self.ui.gb_strahlstrom.setEnabled(True)
             self.ui.txt_ext_cnc.setEnabled(False)
             self.ui.tb_ext_cnc.setEnabled(False)
+
         if rb.text() == 'Y':
             self.ui.gb_strahlstrom.setEnabled(True)
             self.ui.txt_ext_cnc.setEnabled(False)
             self.ui.tb_ext_cnc.setEnabled(False)
+
         if rb.text() == 'Extern':
             self.ui.txt_ib_ext.setEnabled(True)
             self.ui.tb_ib_ext.setEnabled(True)
@@ -302,6 +319,7 @@ class MyApp(QtWidgets.QMainWindow):
         if rb.text() == 'Messung':
             self.ui.cb_t_ab.setEnabled(False)
             self.ui.cb_t_auf.setEnabled(False)
+            
         if rb.text() == 'Regelung':
             self.ui.cb_t_ab.setEnabled(True)
             self.ui.cb_t_auf.setEnabled(True)        
@@ -320,13 +338,14 @@ class MyApp(QtWidgets.QMainWindow):
         receiver.setText(basename(fname))
         self.filepath = fname
 
-       
-    def print_to_line(self):
-        text = self.ui.tab_gen.item(1, 1).text()
-        self.ui.testout.setText(text)
-
-    def get_item(self, row, col):
-        return self.ui.tab_gen.item(row, col)
+    def compile_elo(self):
+        if self.ui.gb_elo.isChecked():
+            """
+                - Schalter für ELO setzen
+                - ELO-Variablen ins Hauptprogramm schreiben
+                - ELO-Block ins Hauptprogramm schreiben
+                - dem Hauptprogramm den CNC-Code hinzufügen
+            """ 
 
     def get_mumo_data(self):
         # Daten werden initialisiert
@@ -343,14 +362,12 @@ class MyApp(QtWidgets.QMainWindow):
         # (keine Mehrfachbeschreibung der Daten)
         rows_uni = np.unique(rows)
         # Datenlabels werden erzeugt
-        # keys = ['INDEX ', 'FIG ', 'SWX ', 'SWY ', 'DCx ', 'DCy ', 'DCz ',
+        # keys = ['INDEX ', 'FIG ', 'SWX ', 'SWY ', 'DCX ', 'DCY ', 'DCZ ',
                 # 'SLC ', 'PVZ ', 'VEK ']
         for row in rows_uni:
             # keys = [key + str(rows) for key in keys]
             items = [self.ui.tab_gen.item(row, col).text() for col in range(anz_c)]
             data.append(items)
-        # print(self.rows_uni)
-        # print(self.data)
 
         return data, rows
 
@@ -358,9 +375,19 @@ class MyApp(QtWidgets.QMainWindow):
         db = Database()
 
         config = {'Config': {
+            'NAME': self.ui.txt_proz_name.text(),
             'CI': self.ui.rb_ci.isChecked(),
             'FLASH': self.ui.rb_flash.isChecked(),
-            'NAME': self.ui.txt_proz_name.text(),
+            'IB-RAMP': self.ui.rb_ib_ramp.isChecked(),
+            'IB-EXT': self.ui.rb_ib_ext.isChecked(),
+            'IB-EXT-FILE': self.ui.txt_ib_ext.text(),
+            'IB-PULS': self.ui.rb_ib_puls.isChecked(),
+            'IB-CONST': self.ui.rb_ib_const.isChecked(),
+            'PYRO': self.ui.gb_pyro.isChecked(),
+            'MESS': self.ui.rb_check_only.isChecked(),
+            'REG': self.ui.rb_reg.isChecked(),
+            'T-AB': self.ui.cb_t_ab.isChecked(),
+            'T-AUF': self.ui.cb_t_auf.isChecked(),
             'XY': self.ui.rb_xy.isChecked(),
             'SUSV': self.ui.rb_susv.isChecked(),
             'CIRC': self.ui.rb_circ.isChecked(),
@@ -375,14 +402,9 @@ class MyApp(QtWidgets.QMainWindow):
             'CCW': self.ui.rb_ccw.isChecked(),
             'IS-Rampe': self.ui.rb_ib_ramp.isChecked(),
             'IS-CONST': self.ui.rb_ib_const.isChecked(),
-            'PYRO': self.ui.gb_pyro.isChecked(),
-            'MESS': self.ui.rb_check_only.isChecked(),
-            'REG': self.ui.rb_reg.isChecked(),
-            'T-AB': self.ui.cb_t_ab.isChecked(),
-            'T-AUF': self.ui.cb_t_auf.isChecked(),
             'ELO': self.ui.gb_elo.isChecked(),
-            'JOG': self.ui.rb_jog.isChecked(),
-            'HDWS': self.ui.rb_hdws.isChecked(),
+            'ELO-JOG': self.ui.rb_jog.isChecked(),
+            'ELO-HDWS': self.ui.rb_hdws.isChecked(),
             'VORPOS': self.ui.cb_vorpos.isChecked(),
             'HEFTEN': self.ui.cb_heften.isChecked(),
             'VORWAERM': self.ui.cb_vorwaerm.isChecked(),
@@ -391,6 +413,9 @@ class MyApp(QtWidgets.QMainWindow):
             'FUSU': self.ui.cb_fusu.isChecked(),
             'POS-KNTR': self.ui.cb_pos.isChecked(),
             'END-KNTR': self.ui.cb_end_kontrolle.isChecked(),
+            'SIM': self.ui.gb_sim.isChecked(),
+            'SIM-MOVE': self.ui.rb_sim_move.isChecked(),
+            'SIM-IB': self.ui.rb_sim_ib.isChecked(),
             'MUMO': self.ui.rb_mumo.isChecked(),
             'MIMO': self.ui.rb_mimo.isChecked()
         }}
@@ -518,14 +543,13 @@ class MyApp(QtWidgets.QMainWindow):
 
         return
 
-
     def write_definitions(self, l):
         db = Database()
         data = db.get()
         for pi in l:
             # pi[0] = Wert, pi[1] = Kategorie
             if pi[0] not in data['Definitionen'][pi[1]]: 
-                db.append('Definitionen', pi[0], pi[1]) 
+                db.append('Definitionen', pi[0], pi[1])    # hier wird die append-Methode der Database-Klasse verwendet, die  Werte zur Datenbank hinzufügt
 
     def write_mpf(self, preview=False):
         #        print(self.header())
@@ -913,6 +937,7 @@ class CNCPreview(QtWidgets.QMainWindow):
 
     def setup_triggers_viewer(self):
         self.pre.actionExport.triggered.connect(self.export_cnc)
+        self.pre.pb_close.clicked.connect(self.close)
 
     def set_cnc(self, text):
         self.pre.preview.setPlainText(text)

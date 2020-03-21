@@ -1,0 +1,71 @@
+{
+    'Comment': {
+        'Autor': 'Halbauer', 
+        'Datum': '01.01.2020', 
+        'Hochspannung': '80 kV'
+        }, 
+    'Definitionen': {
+        'INT': ['REG[21]', 'REGDATA[20]'], 
+        'REAL': ['PYR_PAR[10]'], 
+        'CHAR': ['M_SEL[128]', 'M_SEL_CNT'], 
+        'BOOL': [], 
+        'EXTERN': ['PYR_INIT (INT)']
+        }, 
+    'Schalter': {
+        'VORPOS': 'Vorpositionieren', 
+        'ELO': 'ELO-Monitoring', 
+        'EBS': 'Schweißen'
+        }, 
+    'Variablen': [
+        ['INT', 'KALWERT', '2255', 'Kalibrierwert', '-']
+        ], 
+    'Unterprogramme': {
+        'START_ELO': 'ELO wird aufgerufen', 
+        'END_ELO': 'ELO wird beendet'
+        }, 
+    'Config': {
+        'CI': True, 
+        'FLASH': False, 
+        'NAME': '', 
+        'XY': True, 
+        'SUSV': False, 
+        'CIRC': True, 
+        'LIN': False, 
+        'RAD': False, 
+        'AUTODIR': False, 
+        'DIR-X': True, 
+        'DIR-Y': False, 
+        'CNC': False, 
+        'CNC-TXT': '', 
+        'CW': True, 
+        'CCW': False, 
+        'IS-Rampe': False, 
+        'IS-CONST': True, 
+        'PYRO': True, 
+        'MESS': False, 
+        'REG': True, 
+        'T-AB': False, 
+        'T-AUF': False, 
+        'ELO': True, 
+        'JOG': True, 
+        'HDWS': False, 
+        'VORPOS': False, 
+        'HEFTEN': False, 
+        'VORWAERM': False, 
+        'ABROLL': False, 
+        'MP': False, 
+        'FUSU': False, 
+        'POS-KNTR': False, 
+        'END-KNTR': False, 
+        'MUMO': True, 
+        'MIMO': False
+        }, 
+    'Funktionsgenerator': {
+        'Parameter': [
+            ['1', '2', '20', '20', '-10', '10', '0', '10000', '100', '0'], 
+            ['2', '5', '20', '20', '10', '-10', '0', '10000', '100', '0'], 
+            ['3', '7', '20', '20', '10', '10', '0', '10000', '10', '0']
+            ], 
+        'Order': [1, 2, 3, 3]
+        }
+}
