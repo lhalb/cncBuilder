@@ -1,0 +1,103 @@
+;Suchen Mittelpunkt aus 3 Positionen
+;Radius des Kreises muss angefahren sein
+;10.03.2009 K7-3 
+;Variablen
+Def real _MPXalt    ;vermuteter Mittelpunkt X
+Def real _MPYalt    ;vermuteter Mittelpunkt Y
+Def real _Radiu    ;Radius
+Def real _Winkel    ;Winkelabstand fuer Ermittlung
+Def real _PX1 = 0     ;X1  
+Def real _PY1 = 0     ;Y1
+Def real _PX2 = 0     ;X2
+Def real _PY2 = 0     ;Y2 
+Def real _PX3 = 0     ;X3
+Def real _PY3 = 0     ;Y3
+Def real _Parametert = 0
+Def real _Radiusneu = 0
+Def real _MPXneu = 0  ;Mittelpunkt X neu
+Def real _MPYneu = 0  ;Mittelpunkt Y neu
+
+_Winkel = 120
+
+ 
+WRT(B_FKNR,5, B_FKSZ,90, B_FKLN,1, B_FKCOL, 10)
+SNS
+
+WRT(B_SWX,-50,B_SL,1960,Auff,1)
+SNS
+
+IB1SCAN    ; Aktivierung des Scanmodus
+           ; fuer bessere Bildqualitaet
+
+HDW_3 (B_SWX,5)          
+COPY_SW (B_SWX,B_SWY)
+HDW_2 (AUFF,0)
+HDW_SL_EIN
+
+ELO_EIN(22)
+G4 F1
+G0 SQ 1)
+SQ_EIN_M0
+
+
+MSG("vermutlichen Mittelpunkt anfahren!")
+M00
+STOPRE
+_MPXalt=$AA_IM[X] _MPYalt=$AA_IM[Y]  ;X-Y-Istwertuebernahme Mittelpunkt
+STOPRE
+G1 G53  X=IC(-_radius)  Fms _Fp
+MSG("Strahl ein am Pult X-Position anfahren Weiter mit [Cycle Start] ")
+SQ_EIN_M0
+M00
+Stopre
+_PX1=$AA_IM[X] _PY1=$AA_IM[Y] ;Istwertuebernahme X1 Y1
+STOPRE
+G53G2I=AC(_MPXalt)J=AC(_MPYalt)AR=_Winkel Fms _Fp ;weiterdrehen
+
+MSG("X-Position anfahren Weiter mit [Cycle Start]")
+SQ_EIN_M0
+M00
+_PX2=$AA_IM[X] _PY2=$AA_IM[Y] ;Istwertuebernahme X2 Y2
+STOPRE
+G53G2I=AC(_MPXalt)J=AC(_MPYalt)AR=_Winkel Fms _Fp;weiterdrehen
+MSG("X-Position anfahren Weiter mit [Cycle Start]")
+SQ_EIN_M0
+M00
+_PX3=$AA_IM[X]  _PY3=$AA_IM[Y] ;Istwertuebernahme X3 Y3
+STOPRE
+G0 SQ 0)         ;IS aus
+_Parametert=(((_PX1-_PX3)*(_PX2-_PX3))+((_PY1-_PY3)*(_PY2-_PY3)))/(2*(((_PX1-_PX2)*(_PY3-_PY2))+((_PX2-_PX3)*(_PY1-_PY2)))); Berechnung t
+_MPXneu=(0.5*(_PX1+_PX2))+(_Parametert*(_PY2-_PY1));Berechnung Xm
+_MPYneu=(0.5*(_PY1+_PY2))+(_Parametert*(_PX1-_PX2));Berechnung Ym
+_Radiusneu=SQRT((POT(_PX1-_MPXneu))+(POT(_PY1-_MPYneu)));Berechnung Radius
+STOPRE
+
+;Ueberpruefung gefundener Radius
+IF _Radiusneu<(_radius-0.5) GOTOF Radiusf
+ENDIF
+IF _Radiusneu>(_Radius+0.5) GOTOF Radiusf
+ENDIF
+
+GOTOF Radiusr
+    Radiusf:
+    MSG("Radius falsch")
+    M00
+RADIUSR:
+;Uebergabe neuer Mittelpunkt
+_ZielPosX = _MPXneu
+_ZielPosY = _MPYneu
+
+G1 G53 X=_ZIELPosX Y=_ZielPosY Fms _Fp
+MSG("neuer Mittelpunkt angefahren")
+;M00
+G0 SQ 0)  
+G4 F1
+HDW_2 (0)
+HDW_SL_AUS
+ELO_AUS
+
+MSG("X=" << _ZielPosX << ", Y=" << _ZielposY)
+M0
+
+M17
+

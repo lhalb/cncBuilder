@@ -1,0 +1,321 @@
+; Autor: Halbauer
+; Datum: 20.01.2020
+; Programm zum Schweissen von Rundproben
+; Suche des Mittelopunkts ueber Fugensuche
+; FuSu-ID: 100
+; Hochspannung: 80 kV
+; Ablenker IDD/60V-Rechteck
+
+DEF REAL _dx, _dy, _shift, _radius, _Ffu, _Image_time, _dSL
+DEF REAL _dSLh, _fs_tol, _UPh, _DWNh, _Lh, _Lh_g, _rh
+DEF REAL _UPs, _DWNs, _UELs
+DEF INT _FuSu_ID, _n, _n_heft
+
+DEF INT _FuSu_Mode = 1      ; Modus Radial-Fugensuche
+                           ; 0...Scan mit Strahlablenkung
+                           ; 1...Scan mit XY/Bewegung des Tischs
+                           ;  Ausgangsposition: vermutlicher MP
+                           ; 2...Wie 1 nur mit Ausgangsposition
+                           ;  auf Kreisumfang
+
+DEF BOOL _VORPOS = 1       ; Fahre auf definierte Startpositioon
+DEF BOOL _ELO = 0          ; Nutze ELO zur Kontrolle des SP
+DEF BOOL _FUSU = 0         ; Suche Mittelpunkt ueber Fugensuche
+DEF BOOL _MP_old = 0       ; Suche Mittelpunkt ueber alte Routine
+DEF BOOL _KONTROLLE = 0    ; Starte FuSu doppelt, 
+                           ;  um MP zu verifizieren
+DEF BOOL _HEFTEN = 1       ; Hefte den Kreisumfang teilweise
+DEF BOOL _EBS = 1          ; Schweissen
+DEF BOOL _ENDKONTROLLE = 0 ; ELO zur Nahtkontrolle
+DEF BOOL _SIMULATION = 0   ; Simulation der Schweissung
+
+
+; -- Schweissparameter
+_SQs = 28        ; Schweissstrom [mA]
+_SLs = 1954      ; Linsenstrom OF-Scharf [mA]
+_dSL = -5        ; Linsenstromoffset [mA]
+_Fs = 5          ; Schweissgeschwindigkeit [mm/s]
+
+
+_StrtPosX = 483.550   ; Startposition X [mm]
+_StrtPosY = 248.366   ; Startposition Y [mm]
+
+_UPs   = 20       ; Upslope EBS [Grad]
+_DWNs  = 20       ; Downslope EBs [Grad]
+_UELs  = 10       ; Ueberlappung EBS [Grad]
+
+_radius = 72.5    ; Radius der Ronden [mm]
+_shift = 0.4      ; Versatz zur Fuegekante [mm]
+
+_FIG = 2      ; Strahlfigur (2: Kreis)
+_FRQs = 800    ; Oszillationsfrequenz [Hz]
+_SWXs = 0.5    ; Wedelamplitude X [mm] 
+_SWYs = 0.5    ; Wedelamplitude Y [mm]
+
+_Fp = 40      ; Positioniergeschwindigkeit [mm/s]
+
+; -- Heftparameter
+_SQh = 5
+_SLh = 1959
+_dSLh = 5
+_Fh = 40
+_FIGh = 0       ; Heftfigur (0...Punkt)
+
+_UPh = 1       ; Upslope Heftpunkt [Grad]
+_DWNh = 1      ; Downslope Heften [Grad]
+_Lh = 3        ; Lange Heftpunkt [Grad]
+_n_heft = 10   ; Anzahl Heftpunkte 
+
+
+; -- Fugensuch-Parameter
+_FuSu_ID = 100           ; ID der Fugensuche in EB-Vision
+_SQf = 1.0               ; Strahlstrom FuSu grob [mA]
+;_SQk = 0.4               ; Strahlstrom FuSU Kontrolle [mA]
+_SLf = 1958               ; Linsenstrom FuSu grob [mA]
+;_SLk = 1956               ; Linsenstrom FuSU Kontrolle [mA]
+_Image_time = 11.4       ; Zeit fuer FuSu [s]
+_fs_tol = 10.00           ; Toleranz fuer FuSu [mm]
+
+_SWXf = 15              ; Wedelamplitude X FuSu grob [mm] 
+_SWYf = 0              ; Wedelamplitude Y FuSu [mm]
+
+
+_Kalwert = 2857
+
+INITIAL
+KALWERT(_Kalwert)
+
+; ===============================================================
+;                   Beginn Hauptprogramm
+; ===============================================================
+
+IF _VORPOS
+  MSG("Vorpositionierung")
+  REPEAT Start_Pos End_Pos
+  MSG("Teil positioniert. Weiter mit [CYCLE START]")
+  M00
+ENDIF
+
+
+IF _ELO
+  MSG("Teil mit JOG positionieren. Weiter mit [CYCLE START]")
+  REPEAT START_ELO END_ELO
+  M00
+  REPEAT START_QUIT_ELO END_QUIT_ELO
+ENDIF
+
+IF _MP_OLD
+  MP_3
+ENDIF
+
+IF _FUSU
+  MSG("Fugensuche laueft")
+  REPEAT START_FUSU END_FUSU
+  M0
+  IF _KONTROLLE
+    MSG("Kontrolldurchlauf Fugensuche")
+    REPEAT START_FUSU END_FUSU
+  ENDIF
+  M0
+ENDIF
+
+IF _HEFTEN
+  REPEAT START_HEFTEN END_HEFTEN
+ENDIF
+
+IF _EBS
+  IF _SIMULATION
+    _SQs = 1
+    _SLs = 1960
+    _dSL = 0
+    _shift = 0
+    REPEAT START_ELO END_ELO
+  ENDIF
+  REPEAT START_EBS END_EBS
+  IF _SIMULATION
+    REPEAT START_QUIT_ELO END_QUIT_ELO
+  ELSE
+  REPEAT START_QUIT_EBS END_QUIT_EBS
+  ENDIF
+ENDIF
+
+IF _ENDKONTROLLE
+  MSG("Endkontrolle Schweissnaht")
+  REPEAT START_ELO END_ELO
+  M0
+  REPEAT START_QUIT_ELO END_QUIT_ELO
+ENDIF
+
+M02
+
+; ===============================================================
+;              Ende Hauptprogramm / Beginn Zyklen
+; ===============================================================
+
+
+
+; ----------- Positionieren -------------
+Start_Pos:
+  G1 G90 X=_StrtPosX Y=_StrtPosY Fms _Fp
+
+End_Pos:
+
+
+; ----------- ELO-Monitoring -------------
+START_ELO:
+  WRT(B_SWX,-50,B_SL,1960,Auff,1)
+  SNS
+
+  WRT(B_FKNR,6, B_FKSZ,90, B_FKLN,2, B_FKCOL, 10)
+  SNS
+
+  IB1SCAN    ; Aktivierung des Scanmodus 
+             ; fuer bessere Bildqualitaet
+
+  HDW_3 (B_SWX,5)          
+  COPY_SW (B_SWX,B_SWY)
+  HDW_2 (AUFF,0)
+  HDW_SL_EIN
+
+  ELO_EIN(22)
+  G4 F1
+  G0 SQ 1)
+  SQ_EIN_M0
+  
+
+END_ELO:
+
+
+START_QUIT_ELO:
+  G0 SQ 0)
+  ELO_AUS
+  HDW_1 (0)
+  HDW_2 (0)
+  HDW_3 (0)
+  HDW_SL_AUS
+  MSG ()
+  IB100PROZENT
+
+END_QUIT_ELO:
+
+
+
+; -------------- Fugensuche -----------------
+START_FUSU:
+  WRT(F_ANR,_FUSU_ID,F_SU,0,F_SV,0,F_SWX,_SWXf,F_SWY,_SWYf,F_SL,_SLf)
+  SNS
+
+  WRT(F_NORMX,2500,F_NORMY,0)
+  SNS
+  
+  IB1SCAN    ; Aktivierung des Scanmodus 
+             ; fuer bessere Bildqualitaet
+  
+  WRT(Auff,1)
+  SNS
+  ;FFWON
+
+  M_FS_CY(_FuSU_Mode,_radius,_SQf,_Image_time,_fs_tol,_dx,_dy)
+
+  IF _FS_ERG_ERR == 0
+    ; Routine korrigiert den alten Startpunkt, 
+    ; falls innerhalb der Toleranz
+    _ZielPosX = _StrtPosX + _dX
+    _ZielPosY = _StrtPosY + _dY
+    G1 G90
+    X=_ZielPosX Y=_ZielPosY Fms _Fp
+    MSG("Neuer Mittelpunkt angefahren.")
+    G1 F1
+    MSG("X=" << _ZielPosX << ", Y=" << _ZielposY)
+    M0
+  ENDIF
+
+END_FUSU:
+
+; ------------------ Fahre auf Kreisbahn -----------
+START_KB:
+  STOPRE
+  MSG("Fahre auf Kreisbahn")
+
+  G1 G91 X=(_radius+_shift) Fms _Fp
+  G111 X=($$AA_IM[X]-(_radius+_shift)) Y=$$AA_IM[Y]
+  ;MSG("X=" << ($$AA_IM[X]-(_radius+_shift)) << ", Y=" << $$AA_IM[Y])
+  
+  ;G1 G91 RP=(_radius+_shift) AP=90
+
+END_KB:
+
+
+
+; ------------------- Heften --------------------
+START_HEFTEN:
+  ; Fahre auf Kreisbahn
+  Repeat START_KB END_KB
+  
+  _Lh_g = _n_heft*(_UPh+_DWNh+_Lh)
+  WHILE _Lh_g > 360
+    STOPRE
+    _n_heft = _n_heft - 1  
+    _Lh_g = _n_heft*(_UPh+_DWNh+_Lh)
+  ENDWHILE
+  
+  WRT(S_FIG,_FIGh,S_SWX,0,S_SWY,0)
+  SNS
+  
+  M00
+  IB10PROZENT
+
+  MSG("Heften aktiv!")
+
+  _rh = (360/_n_heft)-(_UPh+_DWNh+_Lh)
+  G64 
+  ; Vorlauf und Fokussierung
+  G3 G91 AP=45 SL (_SLh+_dSLh)) Fms _Fh
+
+  FOR _n = 1 TO _n_heft
+    G3 G91 AP=_UPh SQ _SQh)
+    G3 G91 AP=_Lh
+    G3 G91 AP=_DWNh SQ 0)
+    G3 G91 AP=_rh
+  ENDFOR
+  MSG("Heften beendet")
+
+END_HEFTEN:
+
+
+; ---------------- Schweissen --------------
+START_EBS:
+  IF NOT _SIMULATION
+  WRT(S_FIG,_FIG,S_SWX,_SWXs,S_SWY,_SWYs,S_FRQ,_FRQs)
+  SNS
+  IB100PROZENT
+  ENDIF
+
+  M00
+  STOPRE
+    
+  IF NOT _HEFTEN
+  ; Fahre auf Kreisbahn
+    Repeat START_KB END_KB
+    MSG("Vorlauf")
+    G3 G64 G91 AP=90 SL (_SLs+_dSL)) Fms _Fs
+  ELSE 
+    MSG("Vorlauf")
+    G3 G64 G91 AP=45 SL (_SLs+_dSL)) Fms _Fs
+  ENDIF
+  
+  MSG("Schweissen aktiv!")
+  G3 G91 AP=_UPs SQ _SQs)   ; Upslope
+  G3 G91 AP=360             ; Schweissen
+  G3 G91 AP=_UELs           ; Ueberlappung
+  G3 G91 AP=(_DWNs/2) SQ (_SQs/2)) 
+  G3 G91 AP=(_DWNs/2) SQ 0) SL (_SLs+300)) 
+
+END_EBS:
+
+START_QUIT_EBS:
+  WRT(S_FIG,6,S_SWX,40,S_SWY,40,S_FRQ,1000)
+  SNS
+
+END_QUIT_EBS:
+
