@@ -1,5 +1,6 @@
  # EBS-Programmbeispiel
 
+DEF BOOL _ELO = 1           ;- 1...ELO-EIN
 DEF BOOL _EBS = 1           ;- 1...Schweißen
 DEF BOOL _PULS = 0          ;- 1...Pulsbetrieb
 
@@ -19,20 +20,30 @@ ENDIF
 
 IF _EBX
   REPEAT START_VORBEREITUNG END_VORBEREITUNG
+
   REPEAT START_GENERATOR END_GENERATOR
+
   IF _PULS
     REPEAT START_PULS END_PULS
   ENDIF
+
   M00
+
   --> Abrollvorrichtung AN
+  
   REPEAT START_EBX END_EBX
+  
   --> Abrollvorrichtung AUS
   REPEAT START_QUIT_GENERATOR END_QUIT_GENERATOR
+  
   IF _PULS
     REPEAT START_QUIT_PULS END_QUIT_PULS
   ENDIF
-  
+
+
 ENDIF
+
+
 
 M02
 ; =============================================================================

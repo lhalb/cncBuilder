@@ -12,6 +12,7 @@
         'EXTERN': ['PYR_INIT (INT)']
     }, 
     'Schalter': {
+        'PULS': True,
         'VORPOS': 'Vorpositionieren', 
         'ELO': 'ELO-Monitoring', 
         'EBS': 'Schweißen'

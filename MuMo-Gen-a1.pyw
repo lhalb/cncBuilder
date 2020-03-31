@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jun 20 11:15:32 2018
+Programm zum Erstellen von CNC-Dateien
+GUI wird zur Auswahl der grundlegenden CNC-Funktionalität genutzt
+CNC-Programm wird dadurch um Schalter erweitert, die in CNC de-/aktiviert werden können
 
-Template zum Darstellen von .ui-Dateien, die mit QT designed wurden
-
-
-test
-
-@author: halbauer
+@author: Lars Halbauer
 """
 
 
@@ -20,14 +17,15 @@ import re
 import json
 from os.path import isdir, dirname, basename
 
-
-design_file = 'src/gui_mumo_gen.ui'      # <-- Insert Python File of UI
+# Laden der Design-Dateien
+design_file = 'src/gui_mumo_gen.ui'      
 pop_up = 'src/para-dia.ui'
 comments = 'src/comments.ui'
 preview = 'src/textviewer.ui'
 
+# [0]. Element enthält nur die Klasse des Designs (reicht aus)
 MainWindow = uic.loadUiType(design_file)[0]
-ParaDialog = uic.loadUiType(pop_up)[0]   # lädt nur die Klasse des Designs
+ParaDialog = uic.loadUiType(pop_up)[0]   
 CommentDialog = uic.loadUiType(comments)[0]
 Preview = uic.loadUiType(preview)[0]
 
@@ -40,7 +38,6 @@ class Singleton:
 
     def __init__(self):
         self.__dict__ = self._shared_state
-
 
 class Database(Singleton):
     def __init__(self):
@@ -127,7 +124,6 @@ class Database(Singleton):
                 'END_ELO': 'ELO wird beendet'
             }
         }
-
 
 class MyApp(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -228,14 +224,19 @@ class MyApp(QtWidgets.QMainWindow):
         self.pop.setGeometry(x_pos, y_pos, p_geo.width(), wg.height())
 
     def onClicked(self):
+        '''
+            Funktion, die bei Klick auf einen Button Aktionen ausführt
+        '''
         rb = self.sender()
         if rb.text() == 'MultiMode':
             self.ui.minimod_para.setEnabled(False)
             self.ui.multimode_para.setEnabled(True)
+            self.ui.gen_versch.setEnabled(False)
 
         if rb.text() == 'MiniMode':
             self.ui.multimode_para.setEnabled(False)
             self.ui.minimod_para.setEnabled(True)
+            self.ui.gen_versch.setEnabled(True)
 
         if rb.text() == 'Flash-Prozess':
             self.ui.gb_ansteuer.setEnabled(False)
@@ -319,7 +320,7 @@ class MyApp(QtWidgets.QMainWindow):
         if rb.text() == 'Messung':
             self.ui.cb_t_ab.setEnabled(False)
             self.ui.cb_t_auf.setEnabled(False)
-            
+
         if rb.text() == 'Regelung':
             self.ui.cb_t_ab.setEnabled(True)
             self.ui.cb_t_auf.setEnabled(True)        
@@ -716,7 +717,6 @@ class MyApp(QtWidgets.QMainWindow):
 
             return '\n'.join([gen_out, gen_order, start_par])
 
-
 class PopUp(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -793,7 +793,6 @@ class PopUp(QtWidgets.QMainWindow):
             for col, el in enumerate(row_el):
                 self.window.tab_cnc_para.item(row+start_row, col).setText(el)  
 
-
     def press_ok(self):
         self.press_update()
         self.close()
@@ -833,10 +832,8 @@ class PopUp(QtWidgets.QMainWindow):
 
         self.statusBar().showMessage('Messwerte übertragen', 2000)
 
-
     def press_close(self):
         self.close()
-
 
     def zu_definieren(self, args):
         # Liste mit vorbelegten Variablen (als reguläre Ausdrücke, um Schriebarbeit zu sparen)
